@@ -1,40 +1,57 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui/button';
-	import * as Accordian from '$lib/components/ui/accordion';
+	import { createTodoStore } from '$lib/stores/todo';
+	import TodoList from '$lib/components/TodoList.svelte';
 
-	let count = 0;
-
-	const updateCount = (changeNum: number) => {
-		count += changeNum;
-	};
-	const handleDecrement = () => updateCount(-1);
-	const handleIncrement = () => updateCount(+1);
+	const todos = createTodoStore([
+		{ done: false, description: 'write some docs' },
+		{ done: false, description: 'start writing blog post' },
+		{ done: true, description: 'buy some milk' },
+		{ done: false, description: 'mow the lawn' },
+		{ done: false, description: 'feed the turtle' },
+		{ done: false, description: 'fix some bugs' }
+	]);
 </script>
 
-<div>
-	<button on:click={handleDecrement}>-</button>
-	<p>{count}</p>
-	<button on:click={handleIncrement}>+</button>
+<div class="board">
+	<input
+		placeholder="what needs to be done?"
+		on:keydown={(e) => {
+			if (e.key !== 'Enter') return;
+
+			todos.add(e.currentTarget.value);
+			e.currentTarget.value = '';
+		}}
+	/>
+
+	<div class="todo">
+		<h2>todo</h2>
+		<TodoList store={todos} done={false} />
+	</div>
+
+	<div class="done">
+		<h2>done</h2>
+		<TodoList store={todos} done={true} />
+	</div>
 </div>
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
-<Button>Click me</Button>
-<Accordian.Root>
-	<Accordian.Item value="item-1">
-		<Accordian.Trigger>Is It accessible?</Accordian.Trigger>
-		<Accordian.Content>Yes. It adheres bla bla bla.</Accordian.Content>
-	</Accordian.Item>
-</Accordian.Root>
 
 <style>
-	div {
-		display: flex;
+	.board {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-column-gap: 1em;
+		max-width: 36em;
+		margin: 0 auto;
 	}
 
-	button {
-		background: lightblue;
-		border: solid blue;
-		border-radius: 1em;
-		width: 3em;
+	.board > input {
+		font-size: 1.4em;
+		grid-column: 1/3;
+		padding: 0.5em;
+		margin: 0 0 1rem 0;
+	}
+
+	h2 {
+		font-size: 2em;
+		font-weight: 200;
 	}
 </style>
