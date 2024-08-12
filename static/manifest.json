@@ -1,0 +1,14 @@
+{
+	"name": "HabitKeep",
+	"description": "Keep Your good habits and remove the bad.",
+	"display": "standalone",
+	"start_url": "/",
+	"icons": [
+		{
+			"src": "icons/my-icon.png",
+			"sizes": "512x512",
+			"type": "image/png",
+			"purpose": "any maskable"
+		}
+	]
+}
