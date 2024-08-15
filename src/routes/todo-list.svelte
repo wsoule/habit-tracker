@@ -48,7 +48,22 @@
         />
         <span>{todo.description}</span>
 
-        <Button on:click={() => todoStore.remove(todo)} size="icon" aria-label="Remove">
+        <Button
+          on:click={async () => {
+            const deleteResponse = await fetch('/todo', {
+              method: 'POST',
+              body: JSON.stringify({ id: todo.id, remove: true }),
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            });
+            if (deleteResponse.status === 200) {
+              todoStore.remove(todo);
+            }
+          }}
+          size="icon"
+          aria-label="Remove"
+        >
           <Trash />
         </Button>
       </Label>

@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const addTodoFormSchema = z.object({
-  title: z.string().min(2),
+  description: z.string().min(2),
 });
 
 const todoZod = z.object({

@@ -13,7 +13,7 @@
     data.todos.map((todo) => {
       return {
         complete: todo.complete,
-        description: todo.title,
+        description: todo.description,
         id: todo.id
       };
     })

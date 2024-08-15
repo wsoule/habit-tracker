@@ -3,7 +3,7 @@ import { usersTable } from './user.table';
 
 export const todoTable = pgTable('todo_table', {
   id: uuid('id').defaultRandom().primaryKey(),
-  title: text('title').notNull(),
+  description: text('description').notNull(),
   complete: boolean('complete').default(false).notNull(),
   userId: uuid('user_id')
     .notNull()

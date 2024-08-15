@@ -19,7 +19,7 @@ export const actions: Actions = {
     }
     try {
       const newTodo = await createTodo({
-        title: form.data.title,
+        description: form.data.description,
         userId: "d700733d-2db4-4d14-a7c6-bb9f7ac7958b",
       });
       message(form, "Todo created!");

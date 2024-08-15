@@ -4,9 +4,11 @@
   import FormField from '$lib/components/ui/form/form-field.svelte';
   import { FieldErrors, FormControl, FormDescription, FormLabel } from '$lib/components/ui/form';
   import { Input } from '$lib/components/ui/input';
-  export let data: SuperValidated<Infer<AddTodoFormSchema>>;
   import { page } from '$app/stores';
   import { addTodoFormSchema, type AddTodoFormSchema } from './schema';
+    import { onMount, tick } from 'svelte';
+
+  export let data: SuperValidated<Infer<AddTodoFormSchema>>;
   export let todoStore: ReturnType<typeof import('$lib/stores/todo').createTodoStore>;
 
   let creating: boolean;
@@ -14,13 +16,16 @@
     onUpdate({ result }) {
       console.log('getting to update', result);
       if (result.status === 200) {
-        console.log('result = ', result);
-        todoStore.add(result.data.newTodo[0].title);
+        const { id, description, complete } = result.data.newTodo[0];
+        todoStore.add({
+          id,
+          description,
+        complete});
       }
     },
     onError({ result }) {
       errors.set({
-        title: [result.error.message]
+        description: [result.error.message]
       });
     },
     validators: zodClient(addTodoFormSchema)
@@ -34,14 +39,14 @@
 {/if}
 
 <div class="board">
-  <form method="post" action="?/create" use:enhance>
-    <FormField {form} name="title">
+  <form method="post"  action="?/create" use:enhance>
+    <FormField {form} name="description">
       <FormControl let:attrs>
-        <FormLabel>Title</FormLabel>
+        <FormLabel>task</FormLabel>
         <Input
           {...attrs}
           disabled={creating}
-          bind:value={$formData.title}
+          bind:value={$formData.description}
           placeholder="what needs to be done?"
         />
       </FormControl>

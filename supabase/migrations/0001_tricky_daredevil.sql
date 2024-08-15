@@ -1,0 +1,1 @@
+ALTER TABLE "todo_table" RENAME COLUMN "title" TO "description";

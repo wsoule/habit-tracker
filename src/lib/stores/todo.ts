@@ -14,9 +14,10 @@ export function createTodoStore(initial: TodoItem[]) {
 
   return {
     subscribe,
-    add: (description: string) => {
+    add: ({id, complete = false, description}: TodoItem) => {
       const todo = {
-        complete: false,
+        id,
+        complete,
         description
       };
 
