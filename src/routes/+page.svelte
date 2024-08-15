@@ -16,11 +16,10 @@
       };
     })
   );
-  let creating: boolean;
 </script>
 
 <div class="board">
-  <AddTodoForm  data={data.form} todoStore={todos}/>
+  <AddTodoForm  data={data.form} todoStore={todos} />
 
   <div class="todo">
     <h2>todo</h2>

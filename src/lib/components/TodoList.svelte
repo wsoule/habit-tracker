@@ -19,22 +19,27 @@
       in:receive={{ key: todo.id }}
       out:send={{ key: todo.id }}
       animate:flip={{ duration: 200 }}
-			class="bg-gray-50 rounded-xl p-2 my-2 "
+      class="my-2 rounded-xl bg-gray-50 p-2"
     >
-			<div class="flex items-center space-x-2">
-				<Checkbox id="terms" onCheckedChange={(e) => {
-					console.log(e)
-				}} aria-labelledby="terms-label" />
-  <Label
-    id="terms-label"
-    for="terms"
-    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 w-full flex justify-between items-center"
-  >
-					{todo.description}
-					<Button on:click={() => store.remove(todo)} size="icon" aria-label="Remove"
-						><Trash /></Button>
-  </Label>
-</div>
+      <div class="flex items-center space-x-2">
+        <Checkbox
+          id="terms"
+          onCheckedChange={(e) => {
+            console.log(e);
+          }}
+          aria-labelledby="terms-label"
+        />
+        <Label
+          id="terms-label"
+          for="terms"
+          class="flex w-full items-center justify-between text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          {todo.description}
+          <Button on:click={() => store.remove(todo)} size="icon" aria-label="Remove"
+            ><Trash /></Button
+          >
+        </Label>
+      </div>
     </li>
   {/each}
 </ul>
