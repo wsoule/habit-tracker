@@ -7,8 +7,8 @@
   import FormField from '$lib/components/ui/form/form-field.svelte';
   import { FieldErrors, FormControl, FormDescription, FormLabel } from '$lib/components/ui/form';
   import { Input } from '$lib/components/ui/input';
-	  export let data: SuperValidated<Infer<FormSchema>>;
-	export let todoStore;
+  export let data: SuperValidated<Infer<FormSchema>>;
+  // export let todoStore;
 
   const form = superForm(data, {
     validators: zodClient(formSchema)
@@ -25,22 +25,24 @@
   //     };
   //   })
   // );
+	    // <!-- use:enhance={() => { -->
+	    // <!--   creating = true; -->
+	    // <!--   todoStore.add(createdTodo); -->
+	    // <!--   return async ({ update }) => { -->
+	    // <!--     await update(); -->
+	    // <!--     creating = false; -->
+	    // <!--   }; -->
+	    // <!-- }} -->
+
   let createdTodo: string;
   let creating: boolean;
 </script>
 
 <div class="board">
-	  <form
+  <form
     method="post"
     action="?/create"
-    use:enhance={() => {
-      creating = true;
-      todoStore.add(createdTodo);
-      return async ({ update }) => {
-        await update();
-        creating = false;
-      };
-    }}
+		use:enhance
   >
     <FormField {form} name="title">
       <FormControl let:attrs>
@@ -48,12 +50,15 @@
         <Input
           {...attrs}
           disabled={creating}
-          bind:value={createdTodo}
+          bind:value={$formData.title}
           placeholder="what needs to be done?"
-          name="description"
         />
       </FormControl>
-      <FormDescription>This is your todo item</FormDescription>
+      <FormDescription>
+        {#if creating}
+          <span class="saving">saving...</span>
+        {/if}
+      </FormDescription>
       <FieldErrors />
     </FormField>
   </form>

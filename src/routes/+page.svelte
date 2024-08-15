@@ -2,19 +2,10 @@
   import TodoList from '$lib/components/TodoList.svelte';
   import type { PageData } from './$types';
   import { createTodoStore } from '$lib/stores/todo';
-  import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
-  import { formSchema, type FormSchema } from './schema';
-  import { zodClient } from 'sveltekit-superforms/adapters';
-  import FormField from '$lib/components/ui/form/form-field.svelte';
-  import { FieldErrors, FormControl, FormDescription, FormLabel } from '$lib/components/ui/form';
-  import { Input } from '$lib/components/ui/input';
+  import AddTodoForm from './add-todo.svelte'
   export let data: PageData;
 
-  const form = superForm(data.form, {
-    validators: zodClient(formSchema)
-  });
 
-  const { form: formData, enhance } = form;
 
   let todos = createTodoStore(
     data.todos.map((todo) => {
@@ -25,42 +16,11 @@
       };
     })
   );
-  let createdTodo: string;
   let creating: boolean;
 </script>
 
 <div class="board">
-  <form
-    method="post"
-    action="?/create"
-    use:enhance={() => {
-      creating = true;
-      todos.add(createdTodo);
-      return async ({ update }) => {
-        await update();
-        creating = false;
-      };
-    }}
-  >
-    <FormField {form} name="title">
-      <FormControl let:attrs>
-        <FormLabel>Title</FormLabel>
-        <Input
-          {...attrs}
-          disabled={creating}
-          bind:value={createdTodo}
-          placeholder="what needs to be done?"
-          name="description"
-        />
-      </FormControl>
-      <FormDescription>This is your todo item</FormDescription>
-      <FieldErrors />
-    </FormField>
-  </form>
-
-  {#if creating}
-    <span class="saving">saving...</span>
-  {/if}
+  <AddTodoForm  data={data.form} todoStore={todos}/>
 
   <div class="todo">
     <h2>todo</h2>
