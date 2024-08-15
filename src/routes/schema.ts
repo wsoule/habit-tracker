@@ -1,7 +1,17 @@
 import { z } from "zod";
 
-export const formSchema = z.object({
+export const addTodoFormSchema = z.object({
   title: z.string().min(2),
 });
 
-export type FormSchema = typeof formSchema;
+const todoZod = z.object({
+  id: z.string(),
+  complete: z.boolean(),
+  description: z.string(),
+})
+export const todoStatusSchema = z.object({
+  todos: z.array(todoZod)
+})
+
+export type TodoStatusFormSchema = typeof todoStatusSchema;
+export type AddTodoFormSchema = typeof addTodoFormSchema;

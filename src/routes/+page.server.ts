@@ -1,16 +1,17 @@
 import { db } from "$lib/db/db.server";
 import { todoTable } from "$lib/db/schema/todo.table";
 import type { Actions, PageServerLoad } from "./$types";
-import { type FormSchema, formSchema } from "./schema";
+import { type AddTodoFormSchema, addTodoFormSchema, type TodoStatusFormSchema, todoStatusSchema } from "./schema";
 import { zod } from "sveltekit-superforms/adapters";
 import { type Infer, message, type SuperValidated } from "sveltekit-superforms";
 import { superValidate } from "sveltekit-superforms";
 import { error, fail } from "@sveltejs/kit";
 import { createTodo } from "$lib/db/queries/insert";
 
+
 export const actions: Actions = {
   create: async (event) => {
-    const form = await superValidate(event, zod(formSchema));
+    const form = await superValidate(event, zod(addTodoFormSchema));
     if (!form.valid) {
       return fail(400, {
         form,
@@ -47,8 +48,9 @@ export const actions: Actions = {
 export const load: PageServerLoad = async () => {
   return {
     todos: await db.select().from(todoTable),
-    form: (await superValidate(zod(formSchema))) as SuperValidated<
-      Infer<FormSchema>
+    changeTodoForm: (await superValidate(zod(todoStatusSchema))) as SuperValidated<Infer<TodoStatusFormSchema>>,
+    form: (await superValidate(zod(addTodoFormSchema))) as SuperValidated<
+      Infer<AddTodoFormSchema>
     >,
   };
 };

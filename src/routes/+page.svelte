@@ -1,34 +1,46 @@
 <script lang="ts">
-  import TodoList from '$lib/components/TodoList.svelte';
   import type { PageData } from './$types';
   import { createTodoStore } from '$lib/stores/todo';
-  import AddTodoForm from './add-todo.svelte'
+  import AddTodoForm from './add-todo.svelte';
+  import TodoList from './todo-list.svelte';
+  import { superForm } from 'sveltekit-superforms';
+  import { zodClient } from 'sveltekit-superforms/adapters';
+  import { todoStatusSchema } from './schema'
   export let data: PageData;
 
-
-
+  console.log('data.todos = ', data.todos)
   let todos = createTodoStore(
     data.todos.map((todo) => {
       return {
-        done: todo.complete,
+        complete: todo.complete,
         description: todo.title,
         id: todo.id
       };
     })
   );
+  const form = superForm(data.changeTodoForm, {
+    validators: zodClient(todoStatusSchema),
+    onUpdated: ({ form: f }) => {
+      if (f.valid) {
+        console.log('success');
+      } else {
+        console.log('error');
+      }
+    }
+  });
 </script>
 
 <div class="board">
-  <AddTodoForm  data={data.form} todoStore={todos} />
+  <AddTodoForm data={data.form} todoStore={todos} />
 
   <div class="todo">
     <h2>todo</h2>
-    <TodoList store={todos} done={false} />
+    <TodoList {form} todoStore={todos} complete={false} />
   </div>
 
   <div class="done">
-    <h2>done</h2>
-    <TodoList store={todos} done={true} />
+    <h2>complete</h2>
+    <TodoList {form} todoStore={todos} complete={true} />
   </div>
 </div>
 

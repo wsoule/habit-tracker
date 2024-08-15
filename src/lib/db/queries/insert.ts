@@ -1,3 +1,4 @@
+import { eq } from 'drizzle-orm';
 import { db } from '../db.server';
 import { postsTable, type InsertPost } from '../schema/post.table';
 import { todoTable, type InsertTodo } from '../schema/todo.table';
@@ -13,4 +14,11 @@ export async function createPost(data: InsertPost) {
 
 export async function createTodo(data: InsertTodo) {
   return await db.insert(todoTable).values(data).returning()
+}
+
+export async function changeToDoStatus(data: {complete: boolean, id: string}) {
+  const { complete, id } = data;
+  return await db.update(todoTable).set({
+    complete
+  }).where(eq(todoTable.id, id))
 }

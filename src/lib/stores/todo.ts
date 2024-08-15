@@ -3,22 +3,20 @@ import { writable } from 'svelte/store';
 
 export function createTodoStore(initial: TodoItem[]) {
 
-  const todos: TodoItem[] = initial.map(({ done, description }) => {
-    return {
-      id: crypto.randomUUID(),
-      done,
-      description
-    };
-  });
+  // const todos: TodoItem[] = initial.map(({ complete, description }) => {
+  //   return {
+  //     complete,
+  //     description
+  //   };
+  // });
 
-  const { subscribe, update } = writable(todos);
+  const { subscribe, update } = writable(initial);
 
   return {
     subscribe,
     add: (description: string) => {
       const todo = {
-        id: crypto.randomUUID(),
-        done: false,
+        complete: false,
         description
       };
 
@@ -27,8 +25,8 @@ export function createTodoStore(initial: TodoItem[]) {
     remove: (todo: TodoItem) => {
       update(($todos) => $todos.filter((t) => t !== todo));
     },
-    mark: (todo: TodoItem, done: boolean) => {
-      update(($todos) => [...$todos.filter((t) => t !== todo), { ...todo, done }]);
+    mark: (todo: TodoItem, complete: boolean) => {
+      update(($todos) => [...$todos.filter((t) => t !== todo), { ...todo, complete: complete }]);
     }
   };
 }

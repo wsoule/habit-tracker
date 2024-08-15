@@ -1,15 +1,15 @@
 <script lang="ts">
   import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
-  import { formSchema, type FormSchema } from './schema';
   import { zodClient } from 'sveltekit-superforms/adapters';
   import FormField from '$lib/components/ui/form/form-field.svelte';
   import { FieldErrors, FormControl, FormDescription, FormLabel } from '$lib/components/ui/form';
   import { Input } from '$lib/components/ui/input';
-  export let data: SuperValidated<Infer<FormSchema>>;
+  export let data: SuperValidated<Infer<AddTodoFormSchema>>;
   import { page } from '$app/stores';
+  import { addTodoFormSchema, type AddTodoFormSchema } from './schema';
   export let todoStore: ReturnType<typeof import('$lib/stores/todo').createTodoStore>;
 
-
+  let creating: boolean;
   const form = superForm(data, {
     onUpdate({ result }) {
       console.log('getting to update', result);
@@ -19,18 +19,14 @@
       }
     },
     onError({ result }) {
-			errors.set({
-				title: [result.error.message]
-			})
+      errors.set({
+        title: [result.error.message]
+      });
     },
-    validators: zodClient(formSchema)
+    validators: zodClient(addTodoFormSchema)
   });
 
   const { form: formData, enhance, delayed, message, errors } = form;
-
-
-  console.log('messaeg  ', $message);
-  let creating: boolean;
 </script>
 
 {#if $message}
@@ -52,7 +48,7 @@
       <FormDescription>
         {#if $delayed}
           <span class="saving">Working...</span>
-				{/if}
+        {/if}
       </FormDescription>
       <FieldErrors />
     </FormField>
