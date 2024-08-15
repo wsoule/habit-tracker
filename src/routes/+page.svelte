@@ -1,37 +1,30 @@
 <script lang="ts">
-  import { createTodoStore } from '$lib/stores/todo';
   import TodoList from '$lib/components/TodoList.svelte';
-  export let data;
+    import type { PageData } from './$types';
+    import { enhance } from '$app/forms';
+    import { createTodoStore } from '$lib/stores/todo';
+  export let data: PageData
 
-  const todos = createTodoStore([
-    { done: false, description: 'write some docs' },
-    { done: false, description: 'start writing blog post' },
-    { done: true, description: 'buy some milk' },
-    { done: false, description: 'mow the lawn' },
-    { done: false, description: 'feed the turtle' },
-    { done: false, description: 'fix some bugs' }
-  ]);
-  console.log('data = ', data.countries);
+  const todos= createTodoStore([{
+    done: false,
+    description: 'Hello'
+  }])
+  console.log('data = ', data)
+  // const todos = createTodoStore(data.countries.map((country) => {
+  //   return {
+  //   done: false,
+  //   description: country.name
+  // }}));
 </script>
 
-<ul>
-  {#each data.countries as country}
-    <li>
-      {country.name}
-    </li>
-  {/each}
-</ul>
 
 <div class="board">
+  <form method="post" use:enhance>
   <input
     placeholder="what needs to be done?"
-    on:keydown={(e) => {
-      if (e.key !== 'Enter') return;
-
-      todos.add(e.currentTarget.value);
-      e.currentTarget.value = '';
-    }}
+    name="description"
   />
+  </form>
 
   <div class="todo">
     <h2>todo</h2>
