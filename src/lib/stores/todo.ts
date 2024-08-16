@@ -2,7 +2,6 @@ import type { TodoItem } from '$lib/types/todo-item';
 import { writable } from 'svelte/store';
 
 export function createTodoStore(initial: TodoItem[]) {
-
   // const todos: TodoItem[] = initial.map(({ complete, description }) => {
   //   return {
   //     complete,
@@ -14,7 +13,7 @@ export function createTodoStore(initial: TodoItem[]) {
 
   return {
     subscribe,
-    add: ({id, complete = false, description}: TodoItem) => {
+    add: ({ id, complete = false, description }: TodoItem) => {
       const todo = {
         id,
         complete,
@@ -31,4 +30,3 @@ export function createTodoStore(initial: TodoItem[]) {
     }
   };
 }
-

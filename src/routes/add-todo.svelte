@@ -6,7 +6,7 @@
   import { Input } from '$lib/components/ui/input';
   import { page } from '$app/stores';
   import { addTodoFormSchema, type AddTodoFormSchema } from './schema';
-    import { onMount, tick } from 'svelte';
+  import { onMount, tick } from 'svelte';
 
   export let data: SuperValidated<Infer<AddTodoFormSchema>>;
   export let todoStore: ReturnType<typeof import('$lib/stores/todo').createTodoStore>;
@@ -20,7 +20,8 @@
         todoStore.add({
           id,
           description,
-        complete});
+          complete
+        });
       }
     },
     onError({ result }) {
@@ -39,7 +40,7 @@
 {/if}
 
 <div class="board">
-  <form method="post"  action="?/create" use:enhance>
+  <form method="post" action="?/create" use:enhance>
     <FormField {form} name="description">
       <FormControl let:attrs>
         <FormLabel>task</FormLabel>

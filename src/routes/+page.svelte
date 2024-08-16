@@ -5,10 +5,9 @@
   import TodoList from './todo-list.svelte';
   import { superForm } from 'sveltekit-superforms';
   import { zodClient } from 'sveltekit-superforms/adapters';
-  import { todoStatusSchema } from './schema'
+  import { todoStatusSchema } from './schema';
   export let data: PageData;
 
-  console.log('data.todos = ', data.todos)
   let todos = createTodoStore(
     data.todos.map((todo) => {
       return {
@@ -35,12 +34,12 @@
 
   <div class="todo">
     <h2>todo</h2>
-    <TodoList {form} todoStore={todos} complete={false} />
+    <TodoList todoStore={todos} complete={false} />
   </div>
 
   <div class="done">
     <h2>complete</h2>
-    <TodoList {form} todoStore={todos} complete={true} />
+    <TodoList todoStore={todos} complete={true} />
   </div>
 </div>
 

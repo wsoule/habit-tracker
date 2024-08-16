@@ -5,12 +5,9 @@
   import { Button } from '$lib/components/ui/button';
   import { Trash } from 'lucide-svelte';
   import { receive, send } from '$lib/aminations/transition';
-  import { type Infer, type SuperForm } from 'sveltekit-superforms';
   import { Checkbox } from '$lib/components/ui/checkbox/index.js';
-  import type { TodoStatusFormSchema } from './schema';
   import { Label } from '$lib/components/ui/label';
 
-  export let form: SuperForm<Infer<TodoStatusFormSchema>>;
   export let todoStore: ReturnType<typeof import('$lib/stores/todo').createTodoStore>;
   export let complete;
 </script>

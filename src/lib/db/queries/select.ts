@@ -16,7 +16,7 @@ export async function getUserById(id: SelectUser['id']): Promise<
 
 export async function getUsersWithPostsCount(
   page = 1,
-  pageSize = 5,
+  pageSize = 5
 ): Promise<
   Array<{
     postsCount: number;
@@ -29,7 +29,7 @@ export async function getUsersWithPostsCount(
   return db
     .select({
       ...getTableColumns(usersTable),
-      postsCount: count(postsTable.id),
+      postsCount: count(postsTable.id)
     })
     .from(usersTable)
     .leftJoin(postsTable, eq(usersTable.id, postsTable.userId))
@@ -41,7 +41,7 @@ export async function getUsersWithPostsCount(
 
 export async function getPostsForLast24Hours(
   page = 1,
-  pageSize = 5,
+  pageSize = 5
 ): Promise<
   Array<{
     id: number;
@@ -51,7 +51,7 @@ export async function getPostsForLast24Hours(
   return db
     .select({
       id: postsTable.id,
-      title: postsTable.title,
+      title: postsTable.title
     })
     .from(postsTable)
     .where(between(postsTable.createdAt, sql`now() - interval '1 day'`, sql`now()`))
