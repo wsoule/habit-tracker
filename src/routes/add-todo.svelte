@@ -6,7 +6,6 @@
   import { Input } from '$lib/components/ui/input';
   import { page } from '$app/stores';
   import { addTodoFormSchema, type AddTodoFormSchema } from './schema';
-  import { onMount, tick } from 'svelte';
 
   export let data: SuperValidated<Infer<AddTodoFormSchema>>;
   export let todoStore: ReturnType<typeof import('$lib/stores/todo').createTodoStore>;

@@ -3,9 +3,6 @@
   import { createTodoStore } from '$lib/stores/todo';
   import AddTodoForm from './add-todo.svelte';
   import TodoList from './todo-list.svelte';
-  import { superForm } from 'sveltekit-superforms';
-  import { zodClient } from 'sveltekit-superforms/adapters';
-  import { todoStatusSchema } from './schema';
   export let data: PageData;
 
   let todos = createTodoStore(
@@ -17,16 +14,6 @@
       };
     })
   );
-  const form = superForm(data.changeTodoForm, {
-    validators: zodClient(todoStatusSchema),
-    onUpdated: ({ form: f }) => {
-      if (f.valid) {
-        console.log('success');
-      } else {
-        console.log('error');
-      }
-    }
-  });
 </script>
 
 <div class="board">
