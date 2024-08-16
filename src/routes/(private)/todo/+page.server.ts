@@ -1,6 +1,6 @@
 import { db } from "$lib/db/db.server";
 import { todoTable } from "$lib/db/schema/todo.table";
-import type { Actions, PageServerLoad } from "./$types";
+import type { Actions, PageServerLoad } from "../../$types";
 import {
   type AddTodoFormSchema,
   addTodoFormSchema,
