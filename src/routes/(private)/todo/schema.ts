@@ -7,13 +7,19 @@ export const addTodoFormSchema = z.object({
     .pipe(z.string().min(1, { message: 'This field is required' }))
 });
 
+export const habitInfluenceArray = ['good', 'bad', 'neutral'] as const;
+
+const habitInfluence = z
+  .enum(habitInfluenceArray, {
+    required_error: 'You need to select a category for your habit.'
+  })
+  .default('neutral');
+
+export type HabitInfluence = z.infer<typeof habitInfluence>;
+
 export const addScoreCardSchema = z.object({
   habit: z.string().min(2),
-  type: z
-    .enum(['good', 'bad', 'neutral'], {
-      required_error: 'You need to select a category for your habit.'
-    })
-    .default('neutral')
+  type: habitInfluence
 });
 
 const todoZod = z.object({

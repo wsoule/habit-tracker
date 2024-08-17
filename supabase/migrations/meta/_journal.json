@@ -29,6 +29,13 @@
       "when": 1723903870444,
       "tag": "0003_equal_pestilence",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1723906740377,
+      "tag": "0004_flippant_sabra",
+      "breakpoints": true
     }
   ]
 }

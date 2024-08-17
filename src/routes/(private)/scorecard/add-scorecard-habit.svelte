@@ -37,7 +37,7 @@
 <form method="POST" action="?/create-current-habbit" class="w-2/3 space-y-6" use:enhance>
   <FormField {form} name="habit" class="space-y-3">
     <FormControl let:attrs>
-      <FormLabel>Your Current Habbit</FormLabel>
+      <FormLabel>Add Current Habbit</FormLabel>
       <Input
         {...attrs}
         autofocus
@@ -54,7 +54,7 @@
     <FieldErrors />
   </FormField>
   <FormFieldset {form} name="type" class="space-y-3">
-    <FormLegend>Notify me about...</FormLegend>
+    <FormLegend>It&apos;s Influence on me...</FormLegend>
     <Root bind:value={$formData.type} class="flex flex-col space-y-1">
       <div class="flex items-center space-x-3 space-y-0">
         <FormControl let:attrs>

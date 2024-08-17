@@ -1,0 +1,1 @@
+ALTER TABLE "habit_table" ADD COLUMN "influence" text;
