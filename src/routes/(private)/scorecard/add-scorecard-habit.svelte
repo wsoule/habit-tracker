@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { type Infer, type SuperValidated, superForm } from 'sveltekit-superforms';
+  import SuperDebug, { type Infer, type SuperValidated, superForm } from 'sveltekit-superforms';
   import { zodClient } from 'sveltekit-superforms/adapters';
   import { toast } from 'svelte-sonner';
+  import { browser } from '$app/environment';
   import { Root, RadioGroupItem, RadioGroupInput } from '$lib/components/ui/radio-group';
   import {
     FormFieldset,
@@ -32,7 +33,9 @@
 
   const form = superForm(data, {
     validators: zodClient(addScoreCardSchema),
+    clearOnSubmit: 'none',
     onUpdated: ({ form: f }) => {
+      console.log(' f =', f);
       if (f.valid) {
         toast.success(`You submitted ${JSON.stringify(f.data, null, 2)}`);
       } else {
@@ -154,4 +157,7 @@
     </div>
   </FormFieldset>
   <FormButton>Submit</FormButton>
+  {#if browser}
+    <SuperDebug data={$formData} />
+  {/if}
 </form>
