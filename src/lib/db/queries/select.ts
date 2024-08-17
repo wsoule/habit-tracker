@@ -5,7 +5,7 @@ import { postsTable } from '../schema/post.table';
 
 export async function getUserById(id: SelectUser['id']): Promise<
   Array<{
-    id: number;
+    id: string;
     name: string;
     age: number;
     email: string;
@@ -20,7 +20,7 @@ export async function getUsersWithPostsCount(
 ): Promise<
   Array<{
     postsCount: number;
-    id: number;
+    id: string;
     name: string;
     age: number;
     email: string;
@@ -44,7 +44,7 @@ export async function getPostsForLast24Hours(
   pageSize = 5
 ): Promise<
   Array<{
-    id: number;
+    id: string;
     title: string;
   }>
 > {

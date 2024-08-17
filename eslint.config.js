@@ -17,10 +17,15 @@ export default [
         ...globals.browser,
         ...globals.node
       }
+    },
+    rules: {
+      'semi': ['error', 'always'], // Enforce semicolons
+      'comma-dangle': ['error', 'never'], // Disallow trailing commas
+      'quotes': ['error', 'single'] // Require single quotes
     }
   },
   {
-    files: ['**/*.svelte'],
+    files: ['**/*.svelte', '**/*.ts'],
     languageOptions: {
       parserOptions: {
         parser: ts.parser
@@ -31,3 +36,4 @@ export default [
     ignores: ['build/', '.svelte-kit/', 'dist/']
   }
 ];
+

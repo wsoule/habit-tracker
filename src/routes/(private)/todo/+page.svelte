@@ -18,7 +18,6 @@
 
 <div class="board">
   <AddTodoForm data={data.form} todoStore={todos} />
-
   <div class="todo">
     <h2>todo</h2>
     <TodoList todoStore={todos} complete={false} />

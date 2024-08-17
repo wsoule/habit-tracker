@@ -4,7 +4,6 @@
   import FormField from '$lib/components/ui/form/form-field.svelte';
   import { FieldErrors, FormControl, FormDescription, FormLabel } from '$lib/components/ui/form';
   import { Input } from '$lib/components/ui/input';
-  import { page } from '$app/stores';
   import { addTodoFormSchema, type AddTodoFormSchema } from './schema';
 
   export let data: SuperValidated<Infer<AddTodoFormSchema>>;
@@ -12,7 +11,7 @@
 
   let creating: boolean;
   const form = superForm(data, {
-    onUpdate({ result }) {
+    async onUpdate({ result }) {
       console.log('getting to update', result);
       if (result.status === 200) {
         const { id, description, complete } = result.data.newTodo[0];
@@ -23,20 +22,11 @@
         });
       }
     },
-    onError({ result }) {
-      errors.set({
-        description: [result.error.message]
-      });
-    },
     validators: zodClient(addTodoFormSchema)
   });
 
-  const { form: formData, enhance, delayed, message, errors } = form;
+  const { form: formData, enhance, delayed} = form;
 </script>
-
-{#if $message}
-  <h3 class:invalid={$page.status >= 400}>{$message}</h3>
-{/if}
 
 <div class="board">
   <form method="post" action="?/create" use:enhance>
@@ -44,6 +34,7 @@
       <FormControl let:attrs>
         <FormLabel>task</FormLabel>
         <Input
+          autofocus
           {...attrs}
           disabled={creating}
           bind:value={$formData.description}
