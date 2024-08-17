@@ -1,6 +1,6 @@
 import { db } from "$lib/db/db.server";
 import { todoTable } from "$lib/db/schema/todo.table";
-import type { Actions, PageServerLoad } from "../../$types";
+import type { Actions, PageServerLoad } from "./$types";
 import {
   type AddTodoFormSchema,
   addTodoFormSchema,
@@ -14,8 +14,9 @@ import { error, fail } from "@sveltejs/kit";
 import { createTodo } from "$lib/db/queries/insert";
 
 export const actions: Actions = {
-  create: async (event) => {
-    const form = await superValidate(event, zod(addTodoFormSchema));
+  create: async ({ request }) => {
+    console.log(" reqeust  =", request);
+    const form = await superValidate(request, zod(addTodoFormSchema));
     if (!form.valid) {
       return fail(400, {
         form,
