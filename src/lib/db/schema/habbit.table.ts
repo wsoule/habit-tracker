@@ -1,6 +1,6 @@
 import { jsonb, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 import { usersTable } from './user.table';
-import { habitInfluenceArray } from '../../../routes/(private)/todo/schema';
+import { habitInfluenceArray } from '$lib/types/zod/habit.schema';
 
 export const habitTable = pgTable('habit_table', {
   id: uuid('id').defaultRandom().primaryKey(),
@@ -17,12 +17,3 @@ export const habitTable = pgTable('habit_table', {
 });
 export type InsertHabit = typeof habitTable.$inferInsert;
 export type SelectHabit = typeof habitTable.$inferSelect;
-export enum DaysOfWeek {
-  sunday = 'sunday',
-  saturday = 'saturday',
-  monday = 'monday',
-  tuesday = 'tuesday',
-  wednesday = 'wednesday',
-  thursday = 'thursday',
-  friday = 'friday'
-}

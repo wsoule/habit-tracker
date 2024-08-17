@@ -16,7 +16,14 @@
     FieldErrors
   } from '$lib/components/ui/form';
   import { Input } from '$lib/components/ui/input';
-  import { addScoreCardSchema, type AddScorecardFormSchema } from '$lib/types/zod/habit.schema';
+  import {
+    addScoreCardSchema,
+    daysOfWeekArray,
+    type AddScorecardFormSchema,
+    type DayOfWeek
+  } from '$lib/types/zod/habit.schema';
+  import { Checkbox } from '$lib/components/ui/checkbox';
+  import Label from '$lib/components/ui/label/label.svelte';
   export let data: SuperValidated<Infer<AddScorecardFormSchema>>;
   let creating: boolean;
 
@@ -30,8 +37,17 @@
       }
     }
   });
-
   const { form: formData, delayed, enhance } = form;
+
+  $: allChecked = $formData.daysOfWeek.length === daysOfWeekArray.length;
+
+  const addItem = (dayofWeek: DayOfWeek) => {
+    $formData.daysOfWeek = [...$formData.daysOfWeek, dayofWeek];
+  };
+
+  const removeItem = (dayofWeek: string) => {
+    $formData.daysOfWeek = $formData.daysOfWeek.filter((day) => day !== dayofWeek);
+  };
 </script>
 
 <form method="POST" action="?/create-current-habbit" class="w-2/3 space-y-6" use:enhance>
@@ -53,9 +69,9 @@
     </FormDescription>
     <FieldErrors />
   </FormField>
-  <FormFieldset {form} name="type" class="space-y-3">
+  <FormFieldset {form} name="influence" class="space-y-3">
     <FormLegend>It&apos;s Influence on me...</FormLegend>
-    <Root bind:value={$formData.type} class="flex flex-col space-y-1">
+    <Root bind:value={$formData.influence} class="flex flex-col space-y-1">
       <div class="flex items-center space-x-3 space-y-0">
         <FormControl let:attrs>
           <RadioGroupItem value="good" {...attrs} />
@@ -77,6 +93,51 @@
       <RadioGroupInput name="type" />
     </Root>
     <FormFieldErrors />
+  </FormFieldset>
+  <FormFieldset {form} name="daysOfWeek" class="space-y-0">
+    <div class="mb-4">
+      <FormLegend class="text-base">Sidebar</FormLegend>
+      <FormDescription>Select the items you want to display in the sidebar.</FormDescription>
+    </div>
+    <div class="space-y-2">
+      <div class="flex flex-row items-center space-x-3">
+        <Checkbox
+          id="all"
+          bind:checked={allChecked}
+          onCheckedChange={(v) => {
+            if (v) {
+              $formData.daysOfWeek = [...daysOfWeekArray];
+            } else {
+              $formData.daysOfWeek = [];
+            }
+          }}
+        />
+        <Label for="all" class="font-normal">All</Label>
+      </div>
+      {#each daysOfWeekArray as dayofWeek}
+        {@const checked = $formData.daysOfWeek.includes(dayofWeek)}
+        <div class="flex flex-row items-start space-x-3">
+          <FormControl let:attrs>
+            <Checkbox
+              {...attrs}
+              {checked}
+              onCheckedChange={(v) => {
+                if (v) {
+                  addItem(dayofWeek);
+                } else {
+                  removeItem(dayofWeek);
+                }
+              }}
+            />
+            <FormLabel class="font-normal">
+              {dayofWeek}
+            </FormLabel>
+            <input hidden type="checkbox" name={attrs.name} value={dayofWeek} {checked} />
+          </FormControl>
+        </div>
+      {/each}
+      <FormFieldErrors />
+    </div>
   </FormFieldset>
   <FormButton>Submit</FormButton>
   {#if browser}
