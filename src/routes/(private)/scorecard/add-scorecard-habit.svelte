@@ -67,16 +67,22 @@
   };
 </script>
 
-<form method="POST" action="?/create-current-habbit" class="w-2/3 space-y-6" use:enhance>
+<form
+  method="POST"
+  action="?/create-current-habbit"
+  class="mx-auto w-full max-w-md space-y-6 p-4"
+  use:enhance
+>
   <FormField {form} name="title" class="space-y-3">
     <FormControl let:attrs>
-      <FormLabel>Add Current Habbit</FormLabel>
+      <FormLabel>Add Current Habit</FormLabel>
       <Input
         {...attrs}
         autofocus
         disabled={creating}
         bind:value={$formData.title}
-        placeholder="Today i did..."
+        placeholder="Today I did..."
+        class="w-full"
       />
     </FormControl>
     <FormDescription>
@@ -86,22 +92,23 @@
     </FormDescription>
     <FieldErrors />
   </FormField>
+
   <FormFieldset {form} name="influence" class="space-y-3">
-    <FormLegend>It&apos;s Influence on me...</FormLegend>
-    <Root bind:value={$formData.influence} class="flex flex-col space-y-1">
-      <div class="flex items-center space-x-3 space-y-0">
+    <FormLegend>Its Influence on Me</FormLegend>
+    <Root bind:value={$formData.influence} class="flex flex-col space-y-2">
+      <div class="flex items-center space-x-2">
         <FormControl let:attrs>
           <RadioGroupItem value="good" {...attrs} />
           <FormLabel class="font-normal">Good</FormLabel>
         </FormControl>
       </div>
-      <div class="flex items-center space-x-3 space-y-0">
+      <div class="flex items-center space-x-2">
         <FormControl let:attrs>
           <RadioGroupItem value="neutral" {...attrs} />
           <FormLabel class="font-normal">Neutral</FormLabel>
         </FormControl>
       </div>
-      <div class="flex items-center space-x-3 space-y-0">
+      <div class="flex items-center space-x-2">
         <FormControl let:attrs>
           <RadioGroupItem value="bad" {...attrs} />
           <FormLabel class="font-normal">Bad</FormLabel>
@@ -111,13 +118,14 @@
     </Root>
     <FormFieldErrors />
   </FormFieldset>
-  <FormFieldset {form} name="frequency" class="space-y-0">
-    <div class="mb-4">
-      <FormLegend class="text-base">Sidebar</FormLegend>
-      <FormDescription>Select the items you want to display in the sidebar.</FormDescription>
+
+  <FormFieldset {form} name="frequency" class="space-y-4">
+    <div>
+      <FormLegend class="text-base">Days of the Week</FormLegend>
+      <FormDescription>Select the days this habit occurs.</FormDescription>
     </div>
     <div class="space-y-2">
-      <div class="flex flex-row items-center space-x-3">
+      <div class="flex items-center space-x-3">
         <Checkbox
           id="all"
           bind:checked={allChecked}
@@ -129,11 +137,11 @@
             }
           }}
         />
-        <Label for="all" class="font-normal">All</Label>
+        <Label for="all" class="font-normal">Every Day</Label>
       </div>
       {#each daysOfWeekArray as dayofWeek}
         {@const checked = $formData.frequency.includes(dayofWeek)}
-        <div class="flex flex-row items-start space-x-3">
+        <div class="flex items-center space-x-3">
           <FormControl let:attrs>
             <Checkbox
               {...attrs}
@@ -146,9 +154,7 @@
                 }
               }}
             />
-            <FormLabel class="font-normal">
-              {dayofWeek}
-            </FormLabel>
+            <FormLabel class="font-normal capitalize">{dayofWeek}</FormLabel>
             <input hidden type="checkbox" name={attrs.name} value={dayofWeek} {checked} />
           </FormControl>
         </div>
@@ -156,7 +162,9 @@
       <FormFieldErrors />
     </div>
   </FormFieldset>
-  <FormButton>Submit</FormButton>
+
+  <FormButton class="w-full">Submit</FormButton>
+
   {#if browser}
     <SuperDebug data={$formData} />
   {/if}

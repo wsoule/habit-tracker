@@ -1,4 +1,10 @@
 <script lang="ts">
+  import {
+    Accordion,
+    AccordionItem,
+    AccordionContent,
+    AccordionTrigger
+  } from '$lib/components/ui/accordion';
   import { Badge, type Variant } from '$lib/components/ui/badge';
   import {
     Table,
@@ -39,7 +45,7 @@
       return 'Weekends';
     if (frequency.length === 5 && weekdays.every((day) => frequency.includes(day)))
       return 'Weekdays';
-    return frequency.map((day) => day.charAt(0).toUpperCase() + day.slice(1)).join(', ');
+    return frequency.map((day) => day.substring(0, 2)).join(', ');
   }
 
   // Utility function to determine the influence color
@@ -56,7 +62,14 @@
   }
 </script>
 
-<AddScorecardHabit {habitStore} data={data.addScorecardForm} />
+<Accordion>
+  <AccordionItem value={'create-new-habit'}>
+    <AccordionTrigger>Create New Habit</AccordionTrigger>
+    <AccordionContent>
+      <AddScorecardHabit {habitStore} data={data.addScorecardForm} />
+    </AccordionContent>
+  </AccordionItem>
+</Accordion>
 
 <Table class="mt-4 w-full overflow-hidden rounded-xl border">
   <TableCaption class="bg-gray-100 p-2">Your Habit Scorecard</TableCaption>
@@ -72,7 +85,7 @@
     {#each $habitStore as habit}
       <TableRow class="transition-colors duration-150 hover:bg-gray-50">
         <TableCell class="p-2 font-medium">{habit.title}</TableCell>
-        <TableCell class="p-2 text-left">{formatFrequency(habit.frequency)}</TableCell>
+        <TableCell class="p-2 text-left capitalize">{formatFrequency(habit.frequency)}</TableCell>
         <TableCell class="p-2 text-center capitalize {getInfluenceClass(habit.influence)}">
           <Badge variant={getInfluenceClass(habit.influence)}>{habit.influence}</Badge>
         </TableCell>
