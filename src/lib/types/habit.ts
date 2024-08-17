@@ -1,5 +1,5 @@
 import type { DaysOfWeek } from '$lib/db/schema/habbit.table';
-import type { HabitInfluence } from '../../routes/(private)/todo/schema';
+import type { HabitInfluence } from './zod/habit.schema';
 
 export type Habit = {
   id?: string;

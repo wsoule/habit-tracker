@@ -22,12 +22,12 @@
       <TableHead class="w-[100px]">Habit</TableHead>
       <TableHead>Days</TableHead>
       <TableHead>Influence</TableHead>
-      <TableHead class="text-right">Amount</TableHead>
+      <TableHead class="text-right">Action</TableHead>
     </TableRow>
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableCell class="font-medium">INV001</TableCell>
+      <TableCell class="font-medium">Excesice</TableCell>
       <TableCell>Paid</TableCell>
       <TableCell>Credit Card</TableCell>
       <TableCell class="text-right">$25000</TableCell>

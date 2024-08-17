@@ -4,7 +4,7 @@
   import FormField from '$lib/components/ui/form/form-field.svelte';
   import { FieldErrors, FormControl, FormDescription, FormLabel } from '$lib/components/ui/form';
   import { Input } from '$lib/components/ui/input';
-  import { addTodoFormSchema, type AddTodoFormSchema } from './schema';
+  import { addTodoFormSchema, type AddTodoFormSchema } from '$lib/types/zod/todo.schema';
 
   export let data: SuperValidated<Infer<AddTodoFormSchema>>;
   export let todoStore: ReturnType<typeof import('$lib/stores/todo').createTodoStore>;
@@ -25,7 +25,7 @@
     validators: zodClient(addTodoFormSchema)
   });
 
-  const { form: formData, enhance, delayed} = form;
+  const { form: formData, enhance, delayed } = form;
 </script>
 
 <div class="board">

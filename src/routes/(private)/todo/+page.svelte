@@ -10,7 +10,9 @@
       return {
         complete: todo.complete,
         description: todo.description,
-        id: todo.id
+        id: todo.id,
+        due: todo.due,
+        category: todo.category
       };
     })
   );

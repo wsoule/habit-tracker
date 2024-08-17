@@ -15,8 +15,8 @@
     FormField,
     FieldErrors
   } from '$lib/components/ui/form';
-  import { addScoreCardSchema, type AddScorecardFormSchema } from '../todo/schema';
   import { Input } from '$lib/components/ui/input';
+  import { addScoreCardSchema, type AddScorecardFormSchema } from '$lib/types/zod/habit.schema';
   export let data: SuperValidated<Infer<AddScorecardFormSchema>>;
   let creating: boolean;
 
