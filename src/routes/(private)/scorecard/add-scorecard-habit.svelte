@@ -1,8 +1,7 @@
 <script lang="ts">
-  import SuperDebug, { type Infer, type SuperValidated, superForm } from 'sveltekit-superforms';
+  import { type Infer, type SuperValidated, superForm } from 'sveltekit-superforms';
   import { zodClient } from 'sveltekit-superforms/adapters';
   import { toast } from 'svelte-sonner';
-  import { browser } from '$app/environment';
   import { Root, RadioGroupItem, RadioGroupInput } from '$lib/components/ui/radio-group';
   import {
     FormFieldset,
@@ -42,7 +41,6 @@
     },
     onUpdate: ({ result }) => {
       if (result.status === 200) {
-        console.log('getting to update', result);
         const { id, title, influence, frequency } = result.data.newHabit[0] as Habit;
         habitStore.add({
           id,
@@ -50,8 +48,6 @@
           influence,
           frequency
         });
-
-        console.log($habitStore);
       }
     }
   });
@@ -158,7 +154,4 @@
     </div>
   </FormFieldset>
   <FormButton>Submit</FormButton>
-  {#if browser}
-    <SuperDebug data={$formData} />
-  {/if}
 </form>

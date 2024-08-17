@@ -1,0 +1,1 @@
+ALTER TABLE "habit_table" ALTER COLUMN "influence" SET NOT NULL;

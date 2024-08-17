@@ -7,12 +7,12 @@ export function createHabitStore(initial: Habit[]) {
 
   return {
     subscribe,
-    add: ({ id, title, influence, daysOfWeek }: Habit) => {
+    add: ({ id, title, influence, frequency }: Habit) => {
       const habit = {
         id,
         influence,
         title,
-        daysOfWeek
+        frequency
       };
 
       update(($habits) => [...$habits, habit]);

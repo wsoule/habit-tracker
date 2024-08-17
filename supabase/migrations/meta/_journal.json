@@ -57,6 +57,13 @@
       "when": 1723914636076,
       "tag": "0007_keen_killer_shrike",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1723923876376,
+      "tag": "0008_swift_thunderball",
+      "breakpoints": true
     }
   ]
 }

@@ -6,7 +6,7 @@ export const habitTable = pgTable('habit_table', {
   id: uuid('id').defaultRandom().primaryKey(),
   title: text('title').notNull(),
   frequency: jsonb('frequency').notNull().$type<string[]>(),
-  influence: text('influence', { enum: habitInfluenceArray }),
+  influence: text('influence', { enum: habitInfluenceArray }).notNull(),
   userId: uuid('user_id')
     .notNull()
     .references(() => usersTable.id, { onDelete: 'cascade' }),
