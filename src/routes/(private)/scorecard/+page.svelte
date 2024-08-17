@@ -33,23 +33,22 @@
       };
     })
   );
-  console.log('data habits = ', data.habits);
-  console.log('habitStore = ', $habitStore);
+
   const weekdays: DayOfWeek[] = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
   const weekends: DayOfWeek[] = ['saturday', 'sunday'];
 
   // Utility function to format the frequency nicely
-  function formatFrequency(frequency: DayOfWeek[]): string {
+  const formatFrequency = (frequency: DayOfWeek[]): string => {
     if (frequency.length === daysOfWeekArray.length) return 'All days';
     if (frequency.length === 2 && frequency.every((day) => weekends.includes(day)))
       return 'Weekends';
     if (frequency.length === 5 && weekdays.every((day) => frequency.includes(day)))
       return 'Weekdays';
     return frequency.map((day) => day.substring(0, 2)).join(', ');
-  }
+  };
 
   // Utility function to determine the influence color
-  function getInfluenceClass(influence: string): Variant {
+  const getInfluenceClass = (influence: string): Variant => {
     switch (influence) {
       case 'good':
         return 'success';
@@ -59,7 +58,7 @@
       default:
         return 'secondary';
     }
-  }
+  };
 </script>
 
 <Accordion>

@@ -18,37 +18,17 @@
   );
 </script>
 
-<div class="board">
+<div class="container mx-auto py-8">
   <AddTodoForm data={data.form} todoStore={todos} />
-  <div class="todo">
-    <h2>todo</h2>
-    <TodoList todoStore={todos} complete={false} />
-  </div>
+  <div class="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-2">
+    <div class="todo">
+      <h2 class="mb-4 text-2xl font-bold text-gray-700">Todo</h2>
+      <TodoList todoStore={todos} complete={false} />
+    </div>
 
-  <div class="done">
-    <h2>complete</h2>
-    <TodoList todoStore={todos} complete={true} />
+    <div class="done">
+      <h2 class="mb-4 text-2xl font-bold text-gray-700">Complete</h2>
+      <TodoList todoStore={todos} complete={true} />
+    </div>
   </div>
 </div>
-
-<style>
-  .board {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-column-gap: 1em;
-    max-width: 36em;
-    margin: 0 auto;
-  }
-
-  .board > input {
-    font-size: 1.4em;
-    grid-column: 1/3;
-    padding: 0.5em;
-    margin: 0 0 1rem 0;
-  }
-
-  h2 {
-    font-size: 2em;
-    font-weight: 200;
-  }
-</style>

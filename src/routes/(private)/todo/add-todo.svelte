@@ -28,25 +28,26 @@
   const { form: formData, enhance, delayed } = form;
 </script>
 
-<div class="board">
-  <form method="post" action="?/create" use:enhance>
+<div class="rounded-lg bg-white p-4 shadow-md">
+  <form method="post" action="?/create" use:enhance class="space-y-6">
     <FormField {form} name="description">
       <FormControl let:attrs>
-        <FormLabel>task</FormLabel>
+        <FormLabel class="text-lg font-semibold text-gray-700">Task</FormLabel>
         <Input
           autofocus
           {...attrs}
           disabled={creating}
           bind:value={$formData.description}
-          placeholder="what needs to be done?"
+          placeholder="What needs to be done?"
+          class="w-full rounded-lg border border-gray-300 p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </FormControl>
       <FormDescription>
         {#if $delayed}
-          <span class="saving">Working...</span>
+          <span class="text-sm text-gray-500">Working...</span>
         {/if}
       </FormDescription>
-      <FieldErrors />
+      <FieldErrors class="text-red-500" />
     </FormField>
   </form>
 </div>
