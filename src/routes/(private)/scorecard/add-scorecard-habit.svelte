@@ -107,7 +107,7 @@
           <FormLabel class="font-normal">Bad</FormLabel>
         </FormControl>
       </div>
-      <RadioGroupInput name="type" />
+      <RadioGroupInput name="influence" />
     </Root>
     <FormFieldErrors />
   </FormFieldset>

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { Badge, type Variant } from '$lib/components/ui/badge';
   import {
     Table,
     TableBody,
@@ -42,22 +43,22 @@
   }
 
   // Utility function to determine the influence color
-  function getInfluenceClass(influence: string): string {
+  function getInfluenceClass(influence: string): Variant {
     switch (influence) {
       case 'good':
-        return 'text-primary';
+        return 'success';
       case 'bad':
-        return 'text-destructive';
+        return 'destructive';
       case 'neutral':
       default:
-        return 'text-muted-foreground';
+        return 'secondary';
     }
   }
 </script>
 
 <AddScorecardHabit {habitStore} data={data.addScorecardForm} />
 
-<Table class="mt-4 w-full border rounded-xl overflow-hidden">
+<Table class="mt-4 w-full overflow-hidden rounded-xl border">
   <TableCaption class="bg-gray-100 p-2">Your Habit Scorecard</TableCaption>
   <TableHeader>
     <TableRow class="bg-gray-100">
@@ -73,10 +74,12 @@
         <TableCell class="p-2 font-medium">{habit.title}</TableCell>
         <TableCell class="p-2 text-left">{formatFrequency(habit.frequency)}</TableCell>
         <TableCell class="p-2 text-center capitalize {getInfluenceClass(habit.influence)}">
-          {habit.influence}
+          <Badge variant={getInfluenceClass(habit.influence)}>{habit.influence}</Badge>
         </TableCell>
         <TableCell class="p-2 text-right">
-          <button class="rounded bg-blue-500 px-3 py-1 text-white transition-colors hover:bg-blue-600">
+          <button
+            class="rounded bg-blue-500 px-3 py-1 text-white transition-colors hover:bg-blue-600"
+          >
             Edit
           </button>
         </TableCell>
@@ -84,4 +87,3 @@
     {/each}
   </TableBody>
 </Table>
-

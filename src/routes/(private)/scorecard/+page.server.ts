@@ -10,7 +10,6 @@ import { eq } from 'drizzle-orm';
 
 export const actions: Actions = {
   'create-current-habbit': async ({ request }) => {
-    console.log('createhabit request = ', await request.formData());
     const createHabitForm = await superValidate(request, zod(addScoreCardSchema));
 
     if (!createHabitForm.valid) {
