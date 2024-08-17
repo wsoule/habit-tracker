@@ -5,66 +5,86 @@
   import { receive, send } from '$lib/aminations/transition';
   import { Checkbox } from '$lib/components/ui/checkbox';
   import { Label } from '$lib/components/ui/label';
+  import type { TodoItem } from '$lib/types/todo-item';
 
   export let todoStore: ReturnType<typeof import('$lib/stores/todo').createTodoStore>;
   export let complete;
+
+  // Handle the todo update when a row is clicked
+  const toggleTodo = async (todo: TodoItem) => {
+    const checkComplete = !todo.complete;
+    const response = await fetch('/todo', {
+      method: 'POST',
+      body: JSON.stringify({ complete: checkComplete, id: todo.id }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    if (response.status === 200) {
+      todoStore.mark(todo, checkComplete);
+    }
+  };
+
+  // Handle the todo removal
+  const removeTodo = async (todo: TodoItem, event: Event) => {
+    event.stopPropagation(); // Stop the event from bubbling up to the parent
+    const deleteResponse = await fetch('/todo', {
+      method: 'POST',
+      body: JSON.stringify({ id: todo.id, remove: true }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    if (deleteResponse.status === 200) {
+      todoStore.remove(todo);
+    }
+  };
 </script>
 
-<ul class="todos space-y-2">
+<div class="todos space-y-2">
   {#each $todoStore.filter((todo) => todo.complete === complete) as todo (todo.id)}
-    <li
-      class="flex items-center justify-between rounded-md border bg-white p-2 shadow-sm transition-opacity duration-150 ease-in-out hover:bg-gray-100"
+    <div
+      role="button"
+      tabindex="0"
+      aria-pressed={todo.complete}
+      class="flex w-full cursor-pointer items-center justify-between rounded-md border bg-white p-2 shadow-sm transition-opacity duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
       class:complete
+      on:click={() => toggleTodo(todo)}
+      on:keydown={(event) => {
+        if (event.key === ' ' || event.key === 'Enter') {
+          toggleTodo(todo);
+          event.preventDefault(); // Prevent scrolling on space key
+        }
+      }}
       in:receive={{ key: todo.id }}
       out:send={{ key: todo.id }}
       animate:flip={{ duration: 200 }}
     >
-      <Label class="flex items-center space-x-2">
+      <div class="flex items-center space-x-2">
         <Checkbox
-          class="mr-2"
+          id={`checkbox-${todo.id}`}
+          class="pointer-events-none mr-2"
           aria-checked={todo.complete}
           checked={todo.complete}
-          onCheckedChange={async (checkComplete) => {
-            if (typeof checkComplete !== 'boolean') return;
-
-            const response = await fetch('/todo', {
-              method: 'POST',
-              body: JSON.stringify({ complete: checkComplete, id: todo.id }),
-              headers: {
-                'Content-Type': 'application/json'
-              }
-            });
-            if (response.status === 200) {
-              console.log('marking ');
-              todoStore.mark(todo, checkComplete);
-            }
-          }}
         />
-        <span class={todo.complete ? 'text-gray-500 line-through' : ''}>{todo.description}</span>
-      </Label>
-
+        <Label for={`checkbox-${todo.id}`} class="w-full">
+          <span class={todo.complete ? 'text-gray-500 line-through' : ''}>
+            {todo.description}
+          </span>
+        </Label>
+      </div>
       <Button
-        on:click={async () => {
-          const deleteResponse = await fetch('/todo', {
-            method: 'POST',
-            body: JSON.stringify({ id: todo.id, remove: true }),
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          });
-          if (deleteResponse.status === 200) {
-            todoStore.remove(todo);
-          }
-        }}
+        on:click={(event) => removeTodo(todo, event)}
         size="icon"
+        variant="outline"
         aria-label="Remove"
-        class="ml-2"
+        class="ml-2 border-transparent hover:border-destructive"
       >
         <Trash class="h-4 w-4 text-red-500" />
       </Button>
-    </li>
+    </div>
   {/each}
-</ul>
+</div>
 
 <style>
   .complete {

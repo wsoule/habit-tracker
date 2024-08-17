@@ -164,8 +164,4 @@
   </FormFieldset>
 
   <FormButton class="w-full">Submit</FormButton>
-
-  {#if browser}
-    <SuperDebug data={$formData} />
-  {/if}
 </form>
