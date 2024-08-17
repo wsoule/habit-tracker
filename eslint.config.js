@@ -19,9 +19,9 @@ export default [
       }
     },
     rules: {
-      'semi': ['error', 'always'], // Enforce semicolons
+      semi: ['error', 'always'], // Enforce semicolons
       'comma-dangle': ['error', 'never'], // Disallow trailing commas
-      'quotes': ['error', 'single'] // Require single quotes
+      quotes: ['error', 'single'] // Require single quotes
     }
   },
   {
@@ -36,4 +36,3 @@ export default [
     ignores: ['build/', '.svelte-kit/', 'dist/']
   }
 ];
-

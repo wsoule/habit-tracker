@@ -15,7 +15,6 @@ import {
 
 export const actions: Actions = {
   create: async ({ request }) => {
-    console.log(' reqeust  =', request);
     const form = await superValidate(request, zod(addTodoFormSchema));
     if (!form.valid) {
       return fail(400, {
@@ -47,7 +46,7 @@ export const actions: Actions = {
 
 export const load: PageServerLoad = async () => {
   return {
-    todos: await db.select().from(todoTable),
+    todos: await db.select().from(todoTable).where(),
     changeTodoForm: (await superValidate(zod(todoStatusSchema))) as SuperValidated<
       Infer<TodoStatusFormSchema>
     >,

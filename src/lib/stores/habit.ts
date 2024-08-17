@@ -1,25 +1,33 @@
-// import type { TodoItem } from '$lib/types/todo-item';
-// import { writable } from 'svelte/store';
-//
-// export function createHabitStore(initial: TodoItem[]) {
-//   const { subscribe, update } = writable(initial);
-//
-//   return {
-//     subscribe,
-//     add: ({ id, complete = false, description }: TodoItem) => {
-//       const todo = {
-//         id,
-//         complete,
-//         description
-//       };
-//
-//       update(($todos) => [...$todos, todo]);
-//     },
-//     remove: (todo: TodoItem) => {
-//       update(($todos) => $todos.filter((t) => t !== todo));
-//     },
-//     mark: (todo: TodoItem, complete: boolean) => {
-//       update(($todos) => [...$todos.filter((t) => t !== todo), { ...todo, complete: complete }]);
-//     }
-//   };
-// }
+import type { Habit } from '$lib/types/habit';
+import type { HabitInfluence } from '$lib/types/zod/habit.schema';
+import { writable } from 'svelte/store';
+
+export function createHabitStore(initial: Habit[]) {
+  const { subscribe, update } = writable(initial);
+
+  return {
+    subscribe,
+    add: ({ id, title, influence, daysOfWeek }: Habit) => {
+      const habit = {
+        id,
+        influence,
+        title,
+        daysOfWeek
+      };
+
+      update(($habits) => [...$habits, habit]);
+    },
+    remove: (habit: Habit) => {
+      update(($habits) => $habits.filter((t) => t !== habit));
+    },
+    mark: (habit: Habit, influence: HabitInfluence) => {
+      update(($habits) => [
+        ...$habits.filter((h) => h !== habit),
+        {
+          ...habit,
+          influence
+        }
+      ]);
+    }
+  };
+}

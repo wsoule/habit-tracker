@@ -1,9 +1,8 @@
-import type { DaysOfWeek } from '$lib/db/schema/habbit.table';
-import type { HabitInfluence } from './zod/habit.schema';
+import type { DayOfWeek, HabitInfluence } from './zod/habit.schema';
 
 export type Habit = {
   id?: string;
   title: string;
-  daysOfWeek: DaysOfWeek[];
+  frequency: DayOfWeek[];
   influence: HabitInfluence;
 };

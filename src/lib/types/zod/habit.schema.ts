@@ -3,12 +3,12 @@ import { z } from 'zod';
 export const habitInfluenceArray = ['good', 'bad', 'neutral'] as const;
 export const daysOfWeekArray = [
   'sunday',
-  'saturday',
   'monday',
   'tuesday',
   'wednesday',
   'thursday',
-  'friday'
+  'friday',
+  'saturday'
 ] as const;
 const habitInfluenceZod = z
   .enum(habitInfluenceArray, {
@@ -17,16 +17,17 @@ const habitInfluenceZod = z
   .default('neutral');
 
 export type HabitInfluence = z.infer<typeof habitInfluenceZod>;
-const daysOfWeekZod = z
-  .array(z.enum(daysOfWeekArray))
+const daysOfWeekEnumZod = z.enum(daysOfWeekArray);
+const frequencyZod = z
+  .array(daysOfWeekEnumZod)
   .min(1, { message: 'You must choose atleast one day of the week that this habit falls on.' })
-  .default(['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']);
+  .default([...daysOfWeekArray]);
 
-export type DayOfWeek = z.infer<typeof daysOfWeekZod>;
+export type DayOfWeek = z.infer<typeof daysOfWeekEnumZod>;
 
 export const addScoreCardSchema = z.object({
-  habit: z.string().min(2),
+  title: z.string().min(2),
   influence: habitInfluenceZod,
-  daysOfWeek: daysOfWeekZod
+  frequency: frequencyZod
 });
 export type AddScorecardFormSchema = typeof addScoreCardSchema;

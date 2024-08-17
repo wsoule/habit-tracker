@@ -1,11 +1,11 @@
 import { jsonb, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 import { usersTable } from './user.table';
-import { habitInfluenceArray } from '$lib/types/zod/habit.schema';
+import { habitInfluenceArray } from '../../types/zod/habit.schema';
 
 export const habitTable = pgTable('habit_table', {
   id: uuid('id').defaultRandom().primaryKey(),
-  habit: text('habit').notNull(),
-  days: jsonb('days').notNull().$type<string[]>(),
+  title: text('title').notNull(),
+  frequency: jsonb('frequency').notNull().$type<string[]>(),
   influence: text('influence', { enum: habitInfluenceArray }),
   userId: uuid('user_id')
     .notNull()

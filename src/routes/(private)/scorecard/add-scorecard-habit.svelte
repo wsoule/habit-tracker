@@ -24,7 +24,11 @@
   } from '$lib/types/zod/habit.schema';
   import { Checkbox } from '$lib/components/ui/checkbox';
   import Label from '$lib/components/ui/label/label.svelte';
+  import type { Habit } from '$lib/types/habit';
+  import { createHabitStore } from '$lib/stores/habit';
+
   export let data: SuperValidated<Infer<AddScorecardFormSchema>>;
+  export let habitStore: ReturnType<typeof createHabitStore>;
   let creating: boolean;
 
   const form = superForm(data, {
@@ -35,30 +39,44 @@
       } else {
         toast.error('Please fix the errors in the form.');
       }
+    },
+    onUpdate: ({ result }) => {
+      if (result.status === 200) {
+        console.log('getting to update', result);
+        const { id, title, influence, frequency } = result.data.newHabit[0] as Habit;
+        habitStore.add({
+          id,
+          title,
+          influence,
+          frequency
+        });
+
+        console.log($habitStore);
+      }
     }
   });
   const { form: formData, delayed, enhance } = form;
 
-  $: allChecked = $formData.daysOfWeek.length === daysOfWeekArray.length;
+  $: allChecked = $formData.frequency.length === daysOfWeekArray.length;
 
   const addItem = (dayofWeek: DayOfWeek) => {
-    $formData.daysOfWeek = [...$formData.daysOfWeek, dayofWeek];
+    $formData.frequency = [...$formData.frequency, dayofWeek];
   };
 
   const removeItem = (dayofWeek: string) => {
-    $formData.daysOfWeek = $formData.daysOfWeek.filter((day) => day !== dayofWeek);
+    $formData.frequency = $formData.frequency.filter((day) => day !== dayofWeek);
   };
 </script>
 
 <form method="POST" action="?/create-current-habbit" class="w-2/3 space-y-6" use:enhance>
-  <FormField {form} name="habit" class="space-y-3">
+  <FormField {form} name="title" class="space-y-3">
     <FormControl let:attrs>
       <FormLabel>Add Current Habbit</FormLabel>
       <Input
         {...attrs}
         autofocus
         disabled={creating}
-        bind:value={$formData.habit}
+        bind:value={$formData.title}
         placeholder="Today i did..."
       />
     </FormControl>
@@ -94,7 +112,7 @@
     </Root>
     <FormFieldErrors />
   </FormFieldset>
-  <FormFieldset {form} name="daysOfWeek" class="space-y-0">
+  <FormFieldset {form} name="frequency" class="space-y-0">
     <div class="mb-4">
       <FormLegend class="text-base">Sidebar</FormLegend>
       <FormDescription>Select the items you want to display in the sidebar.</FormDescription>
@@ -106,16 +124,16 @@
           bind:checked={allChecked}
           onCheckedChange={(v) => {
             if (v) {
-              $formData.daysOfWeek = [...daysOfWeekArray];
+              $formData.frequency = [...daysOfWeekArray];
             } else {
-              $formData.daysOfWeek = [];
+              $formData.frequency = [];
             }
           }}
         />
         <Label for="all" class="font-normal">All</Label>
       </div>
       {#each daysOfWeekArray as dayofWeek}
-        {@const checked = $formData.daysOfWeek.includes(dayofWeek)}
+        {@const checked = $formData.frequency.includes(dayofWeek)}
         <div class="flex flex-row items-start space-x-3">
           <FormControl let:attrs>
             <Checkbox

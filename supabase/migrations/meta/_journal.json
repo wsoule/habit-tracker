@@ -43,6 +43,20 @@
       "when": 1723907674925,
       "tag": "0005_zippy_eddie_brock",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1723914050126,
+      "tag": "0006_aberrant_flatman",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1723914636076,
+      "tag": "0007_keen_killer_shrike",
+      "breakpoints": true
     }
   ]
 }
