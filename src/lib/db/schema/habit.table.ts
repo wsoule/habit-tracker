@@ -5,9 +5,8 @@ import { habitInfluenceArray } from '../../types/zod/habit.schema';
 export const habitTable = pgTable('habit_table', {
   id: uuid('id').defaultRandom().primaryKey(),
   title: text('title').notNull(),
-  // frequency: jsonb('frequency').notNull().$type<string[]>(),
-  frequency: integer('frequency').notNull(), // Store as an integer
-
+  frequency: integer('frequency').notNull(), // binary representation of days.
+  streak: integer('streak').notNull().default(0),
   influence: text('influence', { enum: habitInfluenceArray }).notNull(),
   userId: uuid('user_id')
     .notNull()

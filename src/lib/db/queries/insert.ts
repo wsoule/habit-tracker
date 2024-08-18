@@ -1,9 +1,9 @@
 import { eq } from 'drizzle-orm';
 import { db } from '../db.server';
 import { postsTable, type InsertPost } from '../schema/post.table';
-import { todoTable, type InsertTodo } from '../schema/todo.table';
+import { taskTable, type InsertTask } from '../schema/todo.table';
 import { usersTable, type InsertUser } from '../schema/user.table';
-import { habitTable, type InsertHabit } from '../schema/habbit.table';
+import { habitTable, type InsertHabit } from '../schema/habit.table';
 
 export async function createUser(data: InsertUser) {
   return await db.insert(usersTable).values(data);
@@ -13,20 +13,20 @@ export async function createPost(data: InsertPost) {
   return await db.insert(postsTable).values(data);
 }
 
-export async function createTodo(data: InsertTodo) {
-  return await db.insert(todoTable).values(data).returning();
+export async function createTodo(data: InsertTask) {
+  return await db.insert(taskTable).values(data).returning();
 }
 
 export async function createHabit(data: InsertHabit) {
   return await db.insert(habitTable).values(data).returning();
 }
 
-export async function changeToDoStatus(data: { complete: boolean; id: string }) {
-  const { complete, id } = data;
+export async function changeToDoStatus(data: { isComplete: boolean; id: string }) {
+  const { isComplete, id } = data;
   return await db
-    .update(todoTable)
+    .update(taskTable)
     .set({
-      complete
+      isComplete
     })
-    .where(eq(todoTable.id, id));
+    .where(eq(taskTable.id, id));
 }

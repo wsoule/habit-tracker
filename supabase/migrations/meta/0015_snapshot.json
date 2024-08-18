@@ -1,9 +1,83 @@
 {
-  "id": "29acb85e-1af5-4ede-87fd-6d331a25a346",
-  "prevId": "06673cf1-407c-4b23-9b36-bb4d06821f63",
+  "id": "18a6bfd4-2ce1-4ddd-a0ef-b79392eb5d23",
+  "prevId": "479c14cf-501c-4d3a-9a15-3181eea8ef02",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
+    "public.habit_completion_table": {
+      "name": "habit_completion_table",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "habit_id": {
+          "name": "habit_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "is_complete": {
+          "name": "is_complete",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "completion_date": {
+          "name": "completion_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "habit_completion_table_habit_id_habit_table_id_fk": {
+          "name": "habit_completion_table_habit_id_habit_table_id_fk",
+          "tableFrom": "habit_completion_table",
+          "tableTo": "habit_table",
+          "columnsFrom": ["habit_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "habit_completion_table_user_id_users_table_id_fk": {
+          "name": "habit_completion_table_user_id_users_table_id_fk",
+          "tableFrom": "habit_completion_table",
+          "tableTo": "users_table",
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "public.habit_table": {
       "name": "habit_table",
       "schema": "",
@@ -23,9 +97,16 @@
         },
         "frequency": {
           "name": "frequency",
-          "type": "jsonb",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true
+        },
+        "streak": {
+          "name": "streak",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
         },
         "influence": {
           "name": "influence",
@@ -126,8 +207,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.todo_table": {
-      "name": "todo_table",
+    "public.task_table": {
+      "name": "task_table",
       "schema": "",
       "columns": {
         "id": {
@@ -137,51 +218,25 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "description": {
-          "name": "description",
+        "title": {
+          "name": "title",
           "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "category": {
-          "name": "category",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'task'"
-        },
-        "complete": {
-          "name": "complete",
+        "is_complete": {
+          "name": "is_complete",
           "type": "boolean",
           "primaryKey": false,
           "notNull": true,
           "default": false
         },
-        "due": {
-          "name": "due",
+        "due_date": {
+          "name": "due_date",
           "type": "date",
           "primaryKey": false,
           "notNull": true,
-          "default": "'Sat Aug 17 2024'"
-        },
-        "recurring": {
-          "name": "recurring",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": false
-        },
-        "frequency": {
-          "name": "frequency",
-          "type": "jsonb",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "habit_id": {
-          "name": "habit_id",
-          "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
+          "default": "'Sun Aug 18 2024'"
         },
         "user_id": {
           "name": "user_id",
@@ -205,18 +260,9 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "todo_table_habit_id_habit_table_id_fk": {
-          "name": "todo_table_habit_id_habit_table_id_fk",
-          "tableFrom": "todo_table",
-          "tableTo": "habit_table",
-          "columnsFrom": ["habit_id"],
-          "columnsTo": ["id"],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "todo_table_user_id_users_table_id_fk": {
-          "name": "todo_table_user_id_users_table_id_fk",
-          "tableFrom": "todo_table",
+        "task_table_user_id_users_table_id_fk": {
+          "name": "task_table_user_id_users_table_id_fk",
+          "tableFrom": "task_table",
           "tableTo": "users_table",
           "columnsFrom": ["user_id"],
           "columnsTo": ["id"],

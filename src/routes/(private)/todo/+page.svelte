@@ -8,14 +8,14 @@
   let todos = createTodoStore(
     data.todos.map((todo) => {
       return {
-        complete: todo.complete,
-        description: todo.description,
+        isComplete: todo.isComplete,
+        title: todo.title,
         id: todo.id,
-        due: todo.due,
-        category: todo.category
+        dueDate: todo.dueDate
       };
     })
   );
+  console.log('habits = ', data.habits);
 </script>
 
 <div class="container mx-auto py-8">
@@ -31,4 +31,12 @@
       <TodoList todoStore={todos} complete={true} />
     </div>
   </div>
+</div>
+<div class="habits">
+  <h2>Habits for Today</h2>
+  {#each data.habits as habit}
+    <div class="habit">
+      <h3>{habit.habit?.title}</h3>
+    </div>
+  {/each}
 </div>

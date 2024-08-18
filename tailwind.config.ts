@@ -35,7 +35,7 @@ const config: Config = {
         success: {
           DEFAULT: 'hsl(var(--success) / <alpha-value>)',
           foreground: 'hsl(var(--success-foreground) / <alpha-value>)'
-                  },
+        },
         muted: {
           DEFAULT: 'hsl(var(--muted) / <alpha-value>)',
           foreground: 'hsl(var(--muted-foreground) / <alpha-value>)'

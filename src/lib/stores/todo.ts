@@ -1,33 +1,50 @@
+import type { InsertTask, SelectTask } from '$lib/db/schema/todo.table';
 import type { TodoItem } from '$lib/types/todo-item';
 import { writable } from 'svelte/store';
 
-export function createTodoStore(initial: TodoItem[]) {
+export function createTodoStore(initial: Omit<SelectTask, 'userId' | 'createdAt' | 'updatedAt'>[]) {
   const { subscribe, update } = writable(initial);
 
   return {
     subscribe,
     add: ({
       id,
-      complete = false,
-      description,
-      due,
-      category = 'task'
-    }: Omit<TodoItem, 'due' | 'category'> & Partial<Pick<TodoItem, 'due' | 'category'>>) => {
-      const todo: TodoItem = {
-        id,
-        complete,
-        description,
-        due: due ?? new Date().toDateString(),
-        category
+      isComplete = false,
+      title,
+      dueDate = new Date().toDateString()
+    }: Omit<InsertTask, 'userId'>) => {
+      // const todo: SelectTask = {
+      //   id,
+      //   isComplete,
+      //   ,
+      //   due: due ?? new Date().toDateString(),
+      // category
+      // };
+
+      const todo: Omit<SelectTask, 'userId' | 'createdAt' | 'updatedAt'> = {
+        id: id!,
+        isComplete,
+        dueDate,
+        title
       };
+
+      console.log('todo', todo);
 
       update(($todos) => [...$todos, todo]);
     },
-    remove: (todo: TodoItem) => {
-      update(($todos) => $todos.filter((t) => t !== todo));
+    remove: (todo: Omit<SelectTask, 'userId' | 'createdAt' | 'updatedAt'>) => {
+      update(($todos) => $todos.filter((t) => t.id !== todo.id));
     },
-    mark: (todo: TodoItem, complete: boolean) => {
-      update(($todos) => [...$todos.filter((t) => t !== todo), { ...todo, complete: complete }]);
+    mark: (todo: Omit<SelectTask, 'userId' | 'createdAt' | 'updatedAt'>, complete: boolean) => {
+      console.log('marked todo', todo);
+      update(($todos) => [
+        ...$todos.filter((t) => t.id !== todo.id),
+        {
+          ...todo,
+          isComplete: complete
+        }
+      ]);
+      console.log('marked todos2', todo);
     }
   };
 }

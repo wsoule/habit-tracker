@@ -5,6 +5,7 @@
   import { FieldErrors, FormControl, FormDescription, FormLabel } from '$lib/components/ui/form';
   import { Input } from '$lib/components/ui/input';
   import { addTodoFormSchema, type AddTodoFormSchema } from '$lib/types/zod/todo.schema';
+  import type { SelectTask } from '$lib/db/schema/todo.table';
 
   export let data: SuperValidated<Infer<AddTodoFormSchema>>;
   export let todoStore: ReturnType<typeof import('$lib/stores/todo').createTodoStore>;
@@ -14,11 +15,12 @@
     async onUpdate({ result }) {
       console.log('getting to update', result);
       if (result.status === 200) {
-        const { id, description, complete } = result.data.newTodo[0];
+        const { id, title, isComplete } = result.data.newTodo[0] as SelectTask;
+        console.log('addint ');
         todoStore.add({
           id,
-          description,
-          complete
+          title,
+          isComplete
         });
       }
     },
@@ -30,14 +32,14 @@
 
 <div class="rounded-lg bg-white p-4 shadow-md">
   <form method="post" action="?/create" use:enhance class="space-y-6">
-    <FormField {form} name="description">
+    <FormField {form} name="title">
       <FormControl let:attrs>
         <FormLabel class="text-lg font-semibold text-gray-700">Task</FormLabel>
         <Input
           autofocus
           {...attrs}
           disabled={creating}
-          bind:value={$formData.description}
+          bind:value={$formData.title}
           placeholder="What needs to be done?"
           class="w-full rounded-lg border border-gray-300 p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />

@@ -25,7 +25,7 @@
   import { Checkbox } from '$lib/components/ui/checkbox';
   import Label from '$lib/components/ui/label/label.svelte';
   import { createHabitStore } from '$lib/stores/habit';
-  import type { SelectHabit } from '$lib/db/schema/habbit.table';
+  import type { SelectHabit } from '$lib/db/schema/habit.table';
 
   export let data: SuperValidated<Infer<AddScorecardFormSchema>>;
   export let habitStore: ReturnType<typeof createHabitStore>;

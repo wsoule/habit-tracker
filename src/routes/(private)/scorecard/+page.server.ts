@@ -2,10 +2,14 @@ import { type Infer, message, superValidate, type SuperValidated } from 'sveltek
 import type { PageServerLoad } from './$types';
 import { zod } from 'sveltekit-superforms/adapters';
 import { type Actions, fail } from '@sveltejs/kit';
-import { type AddScorecardFormSchema, addScoreCardSchema, daysArrayToBinary } from '$lib/types/zod/habit.schema';
+import {
+  type AddScorecardFormSchema,
+  addScoreCardSchema,
+  daysArrayToBinary
+} from '$lib/types/zod/habit.schema';
 import { createHabit } from '$lib/db/queries/insert';
 import { db } from '$lib/db/db.server';
-import { habitTable } from '$lib/db/schema/habbit.table';
+import { habitTable } from '$lib/db/schema/habit.table';
 import { eq } from 'drizzle-orm';
 
 export const actions: Actions = {

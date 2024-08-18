@@ -6,16 +6,17 @@
   import { Checkbox } from '$lib/components/ui/checkbox';
   import { Label } from '$lib/components/ui/label';
   import type { TodoItem } from '$lib/types/todo-item';
+  import type { InsertTask, SelectTask } from '$lib/db/schema/todo.table';
 
   export let todoStore: ReturnType<typeof import('$lib/stores/todo').createTodoStore>;
   export let complete;
 
   // Handle the todo update when a row is clicked
-  const toggleTodo = async (todo: TodoItem) => {
-    const checkComplete = !todo.complete;
+  const toggleTodo = async (todo: Omit<SelectTask, 'userId' | 'createdAt' | 'updatedAt'>) => {
+    const checkComplete = !todo.isComplete;
     const response = await fetch('/todo', {
       method: 'POST',
-      body: JSON.stringify({ complete: checkComplete, id: todo.id }),
+      body: JSON.stringify({ isComplete: checkComplete, id: todo.id }),
       headers: {
         'Content-Type': 'application/json'
       }
@@ -26,7 +27,10 @@
   };
 
   // Handle the todo removal
-  const removeTodo = async (todo: TodoItem, event: Event) => {
+  const removeTodo = async (
+    todo: Omit<SelectTask, 'userId' | 'createdAt' | 'updatedAt'>,
+    event: Event
+  ) => {
     event.stopPropagation(); // Stop the event from bubbling up to the parent
     const deleteResponse = await fetch('/todo', {
       method: 'POST',
@@ -42,11 +46,11 @@
 </script>
 
 <div class="todos space-y-2">
-  {#each $todoStore.filter((todo) => todo.complete === complete) as todo (todo.id)}
+  {#each $todoStore.filter((todo) => todo.isComplete === complete) as todo (todo.id)}
     <div
       role="button"
       tabindex="0"
-      aria-pressed={todo.complete}
+      aria-pressed={todo.isComplete}
       class="flex w-full cursor-pointer items-center justify-between rounded-md border bg-white p-2 shadow-sm transition-opacity duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
       class:complete
       on:click={() => toggleTodo(todo)}
@@ -64,12 +68,12 @@
         <Checkbox
           id={`checkbox-${todo.id}`}
           class="pointer-events-none mr-2"
-          aria-checked={todo.complete}
-          checked={todo.complete}
+          aria-checked={todo.isComplete}
+          checked={todo.isComplete}
         />
         <Label for={`checkbox-${todo.id}`} class="w-full">
-          <span class={todo.complete ? 'text-gray-500 line-through' : ''}>
-            {todo.description}
+          <span class={todo.isComplete ? 'text-gray-500 line-through' : ''}>
+            {todo.title}
           </span>
         </Label>
       </div>

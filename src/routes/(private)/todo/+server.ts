@@ -1,18 +1,18 @@
 import { db } from '$lib/db/db.server';
 import { changeToDoStatus } from '$lib/db/queries/insert';
-import { todoTable } from '$lib/db/schema/todo.table';
+import { taskTable } from '$lib/db/schema/todo.table';
 import { error, json } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 
 export async function POST({ request }: { request: Request }) {
-  const { id, complete, remove } = await request.json();
+  const { id, isComplete, remove } = await request.json();
   try {
     if (remove) {
-      const deletedTodo = await db.delete(todoTable).where(eq(todoTable.id, id));
+      const deletedTodo = await db.delete(taskTable).where(eq(taskTable.id, id));
     } else {
       await changeToDoStatus({
         id,
-        complete
+        isComplete
       });
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
