@@ -98,7 +98,13 @@ export const getHabitsForDate = async (
   const habits = await db
     .select()
     .from(habitTable)
-    .where(and(eq(habitTable.userId, userId), sql`${habitTable.frequency} & ${todayBit} != 0`));
+    .where(
+      and(
+        eq(habitTable.userId, userId),
+        sql`${habitTable.frequency} & ${todayBit} != 0`,
+        eq(habitTable.influence, 'good')
+      )
+    );
 
   return habits;
 };
