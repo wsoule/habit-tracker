@@ -2,7 +2,7 @@ import { type Infer, message, superValidate, type SuperValidated } from 'sveltek
 import type { PageServerLoad } from './$types';
 import { zod } from 'sveltekit-superforms/adapters';
 import { type Actions, fail } from '@sveltejs/kit';
-import { type AddScorecardFormSchema, addScoreCardSchema } from '$lib/types/zod/habit.schema';
+import { type AddScorecardFormSchema, addScoreCardSchema, daysArrayToBinary } from '$lib/types/zod/habit.schema';
 import { createHabit } from '$lib/db/queries/insert';
 import { db } from '$lib/db/db.server';
 import { habitTable } from '$lib/db/schema/habbit.table';
@@ -24,7 +24,7 @@ export const actions: Actions = {
       const newHabit = await createHabit({
         title: createHabitForm.data.title,
         userId: 'd700733d-2db4-4d14-a7c6-bb9f7ac7958b',
-        frequency: createHabitForm.data.frequency,
+        frequency: daysArrayToBinary(createHabitForm.data.frequency),
         influence: createHabitForm.data.influence
       });
       message(createHabitForm, 'Habit created!');

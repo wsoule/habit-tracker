@@ -10,6 +10,28 @@ export const daysOfWeekArray = [
   'friday',
   'saturday'
 ] as const;
+
+/**
+ * Converts a binary number representing days of the week into an array of days.
+ * @param frequency - The binary representation of the days of the week.
+ * @returns An array of days corresponding to the bits set in the binary number.
+ */
+export const binaryToDaysArray = (frequency: number): DayOfWeek[] => {
+  return daysOfWeekArray.filter((_, index) => (frequency & (1 << index)) !== 0);
+};
+
+/**
+ * Converts an array of days into a binary number representing those days.
+ * @param daysArray - The array of days of the week.
+ * @returns A binary number where each bit represents a day of the week.
+ */
+export const daysArrayToBinary = (daysArray: DayOfWeek[]): number => {
+  return daysArray.reduce((acc, day) => {
+    const dayIndex = daysOfWeekArray.indexOf(day);
+    return acc | (1 << dayIndex);
+  }, 0);
+};
+
 const habitInfluenceZod = z
   .enum(habitInfluenceArray, {
     required_error: 'You need to select a influence type for your habit.'

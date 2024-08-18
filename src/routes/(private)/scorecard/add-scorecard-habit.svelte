@@ -1,8 +1,7 @@
 <script lang="ts">
-  import SuperDebug, { type Infer, type SuperValidated, superForm } from 'sveltekit-superforms';
+  import { type Infer, type SuperValidated, superForm } from 'sveltekit-superforms';
   import { zodClient } from 'sveltekit-superforms/adapters';
   import { toast } from 'svelte-sonner';
-  import { browser } from '$app/environment';
   import { Root, RadioGroupItem, RadioGroupInput } from '$lib/components/ui/radio-group';
   import {
     FormFieldset,
@@ -18,14 +17,15 @@
   import { Input } from '$lib/components/ui/input';
   import {
     addScoreCardSchema,
+    binaryToDaysArray,
     daysOfWeekArray,
     type AddScorecardFormSchema,
     type DayOfWeek
   } from '$lib/types/zod/habit.schema';
   import { Checkbox } from '$lib/components/ui/checkbox';
   import Label from '$lib/components/ui/label/label.svelte';
-  import type { Habit } from '$lib/types/habit';
   import { createHabitStore } from '$lib/stores/habit';
+  import type { SelectHabit } from '$lib/db/schema/habbit.table';
 
   export let data: SuperValidated<Infer<AddScorecardFormSchema>>;
   export let habitStore: ReturnType<typeof createHabitStore>;
@@ -44,12 +44,12 @@
     },
     onUpdate: ({ result }) => {
       if (result.status === 200) {
-        const { id, title, influence, frequency } = result.data.newHabit[0] as Habit;
+        const { id, title, influence, frequency } = result.data.newHabit[0] as SelectHabit;
         habitStore.add({
           id,
           title,
           influence,
-          frequency
+          frequency: binaryToDaysArray(frequency)
         });
       }
     }

@@ -1,0 +1,1 @@
+ALTER TABLE "todo_table" ALTER COLUMN "due" SET DEFAULT 'Sun Aug 18 2024';

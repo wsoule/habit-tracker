@@ -17,7 +17,7 @@
   } from '$lib/components/ui/table';
   import { createHabitStore } from '$lib/stores/habit';
   import type { DayOfWeek } from '$lib/types/zod/habit.schema';
-  import { daysOfWeekArray } from '$lib/types/zod/habit.schema';
+  import { binaryToDaysArray, daysOfWeekArray } from '$lib/types/zod/habit.schema';
   import type { PageData } from './$types';
   import AddScorecardHabit from './add-scorecard-habit.svelte';
 
@@ -29,7 +29,7 @@
         id: habit.id,
         title: habit.title,
         influence: habit.influence,
-        frequency: habit.frequency as DayOfWeek[]
+        frequency: binaryToDaysArray(habit.frequency)
       };
     })
   );

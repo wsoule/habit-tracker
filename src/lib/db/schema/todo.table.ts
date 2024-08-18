@@ -1,6 +1,7 @@
 import { boolean, date, jsonb, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 import { usersTable } from './user.table';
 import { todoCategoryArray } from '../../types/zod/todo.schema';
+import { habitTable } from './habbit.table';
 
 export const todoTable = pgTable('todo_table', {
   id: uuid('id').defaultRandom().primaryKey(),
@@ -10,6 +11,7 @@ export const todoTable = pgTable('todo_table', {
   due: date('due').default(new Date().toDateString()).notNull(),
   recurring: boolean('recurring').default(false).notNull(),
   frequency: jsonb('frequency').$type<string[]>(),
+  habitId: uuid('habit_id').references(() => habitTable.id),
   userId: uuid('user_id')
     .notNull()
     .references(() => usersTable.id, { onDelete: 'cascade' }),

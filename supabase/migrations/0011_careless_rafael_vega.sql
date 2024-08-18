@@ -1,0 +1,1 @@
+ALTER TABLE "todo_table" ALTER COLUMN "habit_id" DROP NOT NULL;
