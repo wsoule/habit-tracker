@@ -81,7 +81,7 @@
         autofocus
         disabled={creating}
         bind:value={$formData.title}
-        placeholder="Today I did..."
+        placeholder="Ride bike"
         class="w-full"
       />
     </FormControl>

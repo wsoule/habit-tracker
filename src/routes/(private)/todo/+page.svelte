@@ -45,11 +45,3 @@
     </div>
   </div>
 </div>
-<div class="habits">
-  <h2>Habits for Today</h2>
-  {#each data.habits as habit}
-    <div class="habit">
-      <h3>{habit.habit?.title}</h3>
-    </div>
-  {/each}
-</div>

@@ -6,7 +6,7 @@
     AccordionTrigger
   } from '$lib/components/ui/accordion';
   import { Badge, type Variant } from '$lib/components/ui/badge';
-    import { Button } from '$lib/components/ui/button';
+  import { Button } from '$lib/components/ui/button';
   import {
     Table,
     TableBody,
@@ -19,7 +19,7 @@
   import { createHabitStore } from '$lib/stores/habit';
   import type { DayOfWeek } from '$lib/types/zod/habit.schema';
   import { binaryToDaysArray, daysOfWeekArray } from '$lib/types/zod/habit.schema';
-    import { Ellipsis, Pencil } from 'lucide-svelte';
+  import { Ellipsis, Pencil } from 'lucide-svelte';
   import type { PageData } from './$types';
   import AddScorecardHabit from './add-scorecard-habit.svelte';
 
@@ -91,11 +91,7 @@
           <Badge variant={getInfluenceClass(habit.influence)}>{habit.influence}</Badge>
         </TableCell>
         <TableCell class="p-2 text-right">
-          <Button
-            variant="ghost"
-            size="icon"
-            class="px-3 py-1"
-          >
+          <Button variant="ghost" size="icon" class="px-3 py-1">
             <Ellipsis />
           </Button>
         </TableCell>
