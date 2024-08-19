@@ -50,10 +50,24 @@ export const actions: Actions = {
   }
 };
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async ({ cookies }) => {
   // getHabitsForToday('d700733d-2db4-4d14-a7c6-bb9f7ac7958b');
-  const todayDate = new Date();
-  const habits = await getHabitsForDate('d700733d-2db4-4d14-a7c6-bb9f7ac7958b', todayDate);
+  const clientTimeZone = cookies.get('timezone');
+
+  const todayDateInClientTZ = new Date().toLocaleString('en-US', {
+    timeZone: clientTimeZone,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  });
+
+  const todayDate = new Date(todayDateInClientTZ);
+
+  const todayDayOfWeek = todayDate.getUTCDay();
+
+  const habits = await getHabitsForDate('d700733d-2db4-4d14-a7c6-bb9f7ac7958b', todayDayOfWeek);
+
+  // const habits = await getHabitsForDate('d700733d-2db4-4d14-a7c6-bb9f7ac7958b', todayDate.getDay());
   let habitsForToday = await db
     .select()
     .from(habitCompletiontable)
@@ -63,7 +77,6 @@ export const load: PageServerLoad = async () => {
         eq(habitCompletiontable.userId, 'd700733d-2db4-4d14-a7c6-bb9f7ac7958b')
       )
     );
-
   // compare the habits with the habitsForToday
   // if the habit is not in habitsForToday, add it with completed = false
   const habitsNotInToday: InsertHabitCompletion[] = [];
@@ -118,7 +131,6 @@ export const load: PageServerLoad = async () => {
     })
   ];
 
-  console.log('todos', todos);
   return {
     todos: todos,
     changeTodoForm: (await superValidate(zod(todoStatusSchema))) as SuperValidated<

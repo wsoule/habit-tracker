@@ -4,7 +4,8 @@ export const usersTable = pgTable('users_table', {
   id: uuid('id').defaultRandom().primaryKey(),
   name: text('name').notNull(),
   age: integer('age').notNull(),
-  email: text('email').notNull().unique()
+  email: text('email').notNull().unique(),
+  timezone: text('timezone').notNull()
 });
 
 export type InsertUser = typeof usersTable.$inferInsert;

@@ -4,6 +4,7 @@ import { db } from '../db.server';
 import { postsTable } from '../schema/post.table';
 import { taskTable, type SelectTask } from '../schema/todo.table';
 import { habitTable, type SelectHabit } from '../schema/habit.table';
+import { binaryToDaysArray } from '$lib/types/zod/habit.schema';
 
 export async function getUserById(id: SelectUser['id']): Promise<
   Array<{
@@ -89,11 +90,21 @@ export const getTasksDue = async (
 
 export const getHabitsForDate = async (
   userId: SelectUser['id'],
-  date: Date = new Date()
+  dayOfWeek: number
 ): Promise<SelectHabit[]> => {
-  // Get today's day of the week as a bit mask (sunday = 1, monday = 2, tuesday = 3, etc.).
-  const todayBit = 1 << date.getDay();
+  // if (typeof date === 'string') {
+  //   date = new Date(date);
+  // }
+  //
+  // if (isNaN(date.getTime())) {
+  //   throw new Error('Invalid date format');
+  // }
+  // // Get today's day of the week as a bit mask (sunday = 1, monday = 2, tuesday = 3, etc.).
+  // console.log('date =', date.getDay());
+  const todayBit = 1 << dayOfWeek; //date.getDay();
 
+  console.log('todayBit =', todayBit);
+  console.log('bin = ', binaryToDaysArray(todayBit));
   // Select habits where the frequency matchest today's bit.
   const habits = await db
     .select()

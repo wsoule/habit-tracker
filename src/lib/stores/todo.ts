@@ -2,17 +2,20 @@ import type { InsertTask, SelectTask } from '$lib/db/schema/todo.table';
 import type { TodoItem } from '$lib/types/todo-item';
 import { writable } from 'svelte/store';
 
-export function createTodoStore(initial: Omit<SelectTask, 'userId' | 'createdAt' | 'updatedAt'>[]) {
+export type Todo = {
+  id: string;
+  title: string;
+  isComplete: boolean;
+  category: 'habit' | 'task';
+  dueDate: string;
+};
+
+export function createTodoStore(initial: Todo[]) {
   const { subscribe, update } = writable(initial);
 
   return {
     subscribe,
-    add: ({
-      id,
-      isComplete = false,
-      title,
-      dueDate = new Date().toDateString()
-    }: Omit<InsertTask, 'userId'>) => {
+    add: ({ id, isComplete = false, title, dueDate = new Date().toDateString() }: Todo) => {
       // const todo: SelectTask = {
       //   id,
       //   isComplete,
@@ -21,7 +24,7 @@ export function createTodoStore(initial: Omit<SelectTask, 'userId' | 'createdAt'
       // category
       // };
 
-      const todo: Omit<SelectTask, 'userId' | 'createdAt' | 'updatedAt'> = {
+      const todo: Todo = {
         id: id!,
         isComplete,
         dueDate,
