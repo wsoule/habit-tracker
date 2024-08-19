@@ -11,11 +11,11 @@
         isComplete: todo.isComplete,
         title: todo.title,
         id: todo.id,
-        dueDate: todo.dueDate
+        dueDate: todo.dueDate,
+        category: todo.category
       };
     })
   );
-  console.log('habits = ', data.habits);
 </script>
 
 <div class="container mx-auto py-8">

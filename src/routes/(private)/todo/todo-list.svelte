@@ -5,18 +5,19 @@
   import { receive, send } from '$lib/aminations/transition';
   import { Checkbox } from '$lib/components/ui/checkbox';
   import { Label } from '$lib/components/ui/label';
-  import type { TodoItem } from '$lib/types/todo-item';
-  import type { InsertTask, SelectTask } from '$lib/db/schema/todo.table';
+  import type { Todo } from '$lib/types/todo-item';
+  import { Badge } from '$lib/components/ui/badge';
+  import type { createTodoStore } from '$lib/stores/todo';
 
-  export let todoStore: ReturnType<typeof import('$lib/stores/todo').createTodoStore>;
+  export let todoStore: ReturnType<typeof createTodoStore>;
   export let complete;
 
   // Handle the todo update when a row is clicked
-  const toggleTodo = async (todo: Omit<SelectTask, 'userId' | 'createdAt' | 'updatedAt'>) => {
+  const toggleTodo = async (todo: Todo) => {
     const checkComplete = !todo.isComplete;
     const response = await fetch('/todo', {
       method: 'POST',
-      body: JSON.stringify({ isComplete: checkComplete, id: todo.id }),
+      body: JSON.stringify({ isComplete: checkComplete, id: todo.id, category: todo.category }),
       headers: {
         'Content-Type': 'application/json'
       }
@@ -27,10 +28,7 @@
   };
 
   // Handle the todo removal
-  const removeTodo = async (
-    todo: Omit<SelectTask, 'userId' | 'createdAt' | 'updatedAt'>,
-    event: Event
-  ) => {
+  const removeTodo = async (todo: Todo, event: Event) => {
     event.stopPropagation(); // Stop the event from bubbling up to the parent
     const deleteResponse = await fetch('/todo', {
       method: 'POST',
@@ -75,6 +73,7 @@
           <span class={todo.isComplete ? 'text-gray-500 line-through' : ''}>
             {todo.title}
           </span>
+          <Badge variant="secondary">{todo.category}</Badge>
         </Label>
       </div>
       <Button

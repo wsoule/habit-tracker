@@ -1,7 +1,9 @@
-export type TodoItem = {
+export type Todo = {
+  id: string;
+  title: string;
   isComplete: boolean;
-  id?: string;
-  description: string;
-  due: string;
-  category: 'task' | 'habit';
+  category: TodoCategory;
+  dueDate: string;
 };
+
+export type TodoCategory = 'habit' | 'task';

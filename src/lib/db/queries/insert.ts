@@ -1,4 +1,3 @@
-import { eq } from 'drizzle-orm';
 import { db } from '../db.server';
 import { postsTable, type InsertPost } from '../schema/post.table';
 import { taskTable, type InsertTask } from '../schema/todo.table';
@@ -19,14 +18,4 @@ export async function createTodo(data: InsertTask) {
 
 export async function createHabit(data: InsertHabit) {
   return await db.insert(habitTable).values(data).returning();
-}
-
-export async function changeToDoStatus(data: { isComplete: boolean; id: string }) {
-  const { isComplete, id } = data;
-  return await db
-    .update(taskTable)
-    .set({
-      isComplete
-    })
-    .where(eq(taskTable.id, id));
 }
