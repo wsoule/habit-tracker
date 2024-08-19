@@ -20,17 +20,18 @@
         todoStore.add({
           id,
           title,
-          isComplete
+          isComplete,
+          category: 'task',
+          dueDate: new Date()
         });
       }
     },
     validators: zodClient(addTodoFormSchema)
   });
-
   const { form: formData, enhance, delayed } = form;
 </script>
 
-<div class="rounded-lg bg-white p-4 shadow-md">
+<div class="p-4">
   <form method="post" action="?/create" use:enhance class="space-y-6">
     <FormField {form} name="title">
       <FormControl let:attrs>

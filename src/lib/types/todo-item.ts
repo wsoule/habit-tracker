@@ -3,7 +3,7 @@ export type Todo = {
   title: string;
   isComplete: boolean;
   category: TodoCategory;
-  dueDate: string;
+  dueDate: string | Date;
 };
 
 export type TodoCategory = 'habit' | 'task';
