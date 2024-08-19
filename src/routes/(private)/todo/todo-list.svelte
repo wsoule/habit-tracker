@@ -1,7 +1,7 @@
 <script lang="ts">
   import { flip } from 'svelte/animate';
   import { Button } from '$lib/components/ui/button';
-  import { Trash } from 'lucide-svelte';
+  import { Ellipsis, Trash, ChartNoAxesColumn, Pencil, NotebookPen } from 'lucide-svelte';
   import { receive, send } from '$lib/aminations/transition';
   import { Checkbox } from '$lib/components/ui/checkbox';
   import { Label } from '$lib/components/ui/label';
@@ -9,7 +9,7 @@
   import { Badge } from '$lib/components/ui/badge';
   import type { createTodoStore } from '$lib/stores/todo';
   import { toast } from 'svelte-sonner';
-  import { page } from '$app/stores';
+  import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 
   export let todoStore: ReturnType<typeof createTodoStore>;
   export let complete;
@@ -53,18 +53,8 @@
 <div class="todos space-y-2">
   {#each $todoStore.filter((todo) => todo.isComplete === complete) as todo (todo.id)}
     <div
-      role="button"
-      tabindex="0"
-      aria-pressed={todo.isComplete}
-      class="flex w-full cursor-pointer items-center justify-between rounded-md border bg-white p-2 shadow-sm transition-opacity duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+      class="flex w-full items-center justify-between rounded-md border p-2 shadow-sm transition-opacity duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
       class:complete
-      on:click={() => toggleTodo(todo)}
-      on:keydown={(event) => {
-        if (event.key === ' ' || event.key === 'Enter') {
-          toggleTodo(todo);
-          event.preventDefault(); // Prevent scrolling on space key
-        }
-      }}
       in:receive={{ key: todo.id }}
       out:send={{ key: todo.id }}
       animate:flip={{ duration: 200 }}
@@ -72,9 +62,12 @@
       <div class="flex items-center space-x-2">
         <Checkbox
           id={`checkbox-${todo.id}`}
-          class="pointer-events-none mr-2"
+          class="mr-2"
           aria-checked={todo.isComplete}
           checked={todo.isComplete}
+          onCheckedChange={() => {
+            toggleTodo(todo);
+          }}
         />
         <Label for={`checkbox-${todo.id}`} class="w-full">
           <span class={todo.isComplete ? 'text-gray-500 line-through' : ''}>
@@ -83,15 +76,36 @@
           <Badge variant="secondary">{todo.category}</Badge>
         </Label>
       </div>
-      <Button
-        on:click={(event) => removeTodo(todo, event)}
-        size="icon"
-        variant="outline"
-        aria-label="Remove"
-        class="ml-2 border-transparent hover:border-destructive"
-      >
-        <Trash class="h-4 w-4 text-red-500" />
-      </Button>
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger asChild let:builder>
+          <Button variant="ghost" builders={[builder]} size="icon" class="relative h-8 w-8 p-0">
+            <span class="sr-only">Open menu</span>
+            <Ellipsis class="h-4 w-4" />
+          </Button>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          <DropdownMenu.Group>
+            <DropdownMenu.Label>Actions</DropdownMenu.Label>
+            <DropdownMenu.Item><Pencil class="mr-2 h-4 w-4" /><span>Edit</span></DropdownMenu.Item>
+            <DropdownMenu.Item
+              ><NotebookPen class="mr-2 h-4 w-4" /><span>Add note</span></DropdownMenu.Item
+            >
+          </DropdownMenu.Group>
+          <DropdownMenu.Separator />
+          {#if todo.category === 'habit'}
+            <DropdownMenu.Item
+              ><ChartNoAxesColumn class="mr-2 h-4 w-4" /><span>View Stats</span></DropdownMenu.Item
+            >
+          {/if}
+          {#if todo.category === 'task'}
+            <DropdownMenu.Item on:click={(event) => removeTodo(todo, event)}
+              ><Trash class="mr-2 h-4 w-4 text-destructive" /><span class="text-destructive"
+                >Delete</span
+              ></DropdownMenu.Item
+            >
+          {/if}
+        </DropdownMenu.Content>
+      </DropdownMenu.Root>
     </div>
   {/each}
 </div>
