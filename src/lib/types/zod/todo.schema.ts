@@ -1,10 +1,13 @@
 import { z } from 'zod';
 
+export const titleZod = z
+  .string()
+  .transform((value) => value.replace(/(^\s+|\s+$)/g, ''))
+  .transform((value) => value.replace(/\s{2,}/g, ' '))
+  .pipe(z.string().min(1, { message: 'Title is required' }));
+
 export const addTodoFormSchema = z.object({
-  title: z
-    .string()
-    .transform((value) => value.replace(/\s+/g, ''))
-    .pipe(z.string().min(1, { message: 'Title is required' }))
+  title: titleZod
 });
 
 const todoZod = z.object({

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { titleZod } from './todo.schema';
 
 export const habitInfluenceArray = ['good', 'bad', 'neutral'] as const;
 export const daysOfWeekArray = [
@@ -48,7 +49,7 @@ const frequencyZod = z
 export type DayOfWeek = z.infer<typeof daysOfWeekEnumZod>;
 
 export const addScoreCardSchema = z.object({
-  title: z.string().min(2),
+  title: titleZod,
   influence: habitInfluenceZod,
   frequency: frequencyZod
 });

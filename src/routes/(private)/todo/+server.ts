@@ -14,17 +14,16 @@ export async function POST({ request }: { request: Request }) {
   }
   const { id, category } = requestObject;
   const table = category === 'habit' ? habitCompletiontable : taskTable;
-  try {
-    if (requestObject.removed) {
-      await deleteTodo(id, table);
-    } else {
-      const { isComplete } = requestObject as Todo;
-      await changeToDoStatus(id, isComplete, table);
+  if (requestObject.remove) {
+    if (category === 'habit') {
+      throw error(400, {
+        message: 'You cannot delete a habit here. Please go to scorecard to edit your habits.'
+      });
     }
-  } catch (_e) {
-    throw error(500, {
-      message: `error updating status of ${id}`
-    });
+    await deleteTodo(id, table);
+  } else {
+    const { isComplete } = requestObject as Todo;
+    await changeToDoStatus(id, isComplete, table);
   }
   // TODO: impliment cookies auth
   // const userid = cookies.get("userid");

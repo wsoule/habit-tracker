@@ -7,5 +7,5 @@ export const deleteTodo = async (
   id: string,
   table: typeof habitCompletiontable | typeof taskTable
 ) => {
-    await db.delete(table).where(eq(table.id, id));
+  await db.delete(table).where(eq(table.id, id));
 };

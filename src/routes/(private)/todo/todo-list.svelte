@@ -8,6 +8,8 @@
   import type { Todo } from '$lib/types/todo-item';
   import { Badge } from '$lib/components/ui/badge';
   import type { createTodoStore } from '$lib/stores/todo';
+  import { toast } from 'svelte-sonner';
+  import { page } from '$app/stores';
 
   export let todoStore: ReturnType<typeof createTodoStore>;
   export let complete;
@@ -32,12 +34,17 @@
     event.stopPropagation(); // Stop the event from bubbling up to the parent
     const deleteResponse = await fetch('/todo', {
       method: 'POST',
-      body: JSON.stringify({ id: todo.id, remove: true }),
+      body: JSON.stringify({ id: todo.id, remove: true, category: todo.category }),
       headers: {
         'Content-Type': 'application/json'
       }
     });
-    if (deleteResponse.status === 200) {
+    if (deleteResponse.status === 400) {
+      const deleteResError = await deleteResponse.json();
+      console.log('delete response =', deleteResError);
+      toast.error(deleteResError.message);
+      console.log('got the error message');
+    } else if (deleteResponse.status === 200) {
       todoStore.remove(todo);
     }
   };

@@ -10,7 +10,7 @@
   <a href="/scorecard" aria-current={$page.url.pathname === '/scorecard'}>scorecard</a>
 </nav>
 
-<Toaster />
+<Toaster richColors />
 
 <div class="p-2"><slot></slot></div>
 
