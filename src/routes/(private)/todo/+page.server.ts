@@ -13,11 +13,11 @@ import {
   todoStatusSchema
 } from '$lib/types/zod/todo.schema';
 import { getHabitsForDate } from '$lib/db/queries/select';
+import { and, eq } from 'drizzle-orm';
 import {
-  habitCompletiontable,
+  habitCompletionTable,
   type InsertHabitCompletion
 } from '$lib/db/schema/habit-completion.table';
-import { and, eq } from 'drizzle-orm';
 
 export const actions: Actions = {
   create: async ({ request }) => {
@@ -67,16 +67,18 @@ export const load: PageServerLoad = async ({ cookies }) => {
 
   const habits = await getHabitsForDate('d700733d-2db4-4d14-a7c6-bb9f7ac7958b', todayDayOfWeek);
 
-  // const habits = await getHabitsForDate('d700733d-2db4-4d14-a7c6-bb9f7ac7958b', todayDate.getDay());
+  console.log('habits =', habits);
   let habitsForToday = await db
     .select()
-    .from(habitCompletiontable)
+    .from(habitCompletionTable)
     .where(
       and(
-        eq(habitCompletiontable.completionDate, todayDate.toDateString()),
-        eq(habitCompletiontable.userId, 'd700733d-2db4-4d14-a7c6-bb9f7ac7958b')
+        eq(habitCompletionTable.completionDate, todayDate.toDateString()),
+        eq(habitCompletionTable.userId, 'd700733d-2db4-4d14-a7c6-bb9f7ac7958b')
       )
     );
+
+  // console.log('habits forToday =', habitsForToday);
   // compare the habits with the habitsForToday
   // if the habit is not in habitsForToday, add it with completed = false
   const habitsNotInToday: InsertHabitCompletion[] = [];
@@ -92,7 +94,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 
   if (habitsNotInToday.length > 0) {
     const allHabitsForToday = await db
-      .insert(habitCompletiontable)
+      .insert(habitCompletionTable)
       .values(habitsNotInToday)
       .returning();
     habitsForToday = [...habitsForToday, ...allHabitsForToday];

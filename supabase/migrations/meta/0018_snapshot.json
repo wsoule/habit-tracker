@@ -1,6 +1,6 @@
 {
-  "id": "c416324d-c35a-4877-bd99-8b2b3e42de1d",
-  "prevId": "1edbcfeb-6c85-4dd9-897c-20f425a40469",
+  "id": "465a50ff-16bb-46e1-882c-208a09504a50",
+  "prevId": "c416324d-c35a-4877-bd99-8b2b3e42de1d",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -61,8 +61,12 @@
           "name": "habit_completion_table_habit_id_habit_table_id_fk",
           "tableFrom": "habit_completion_table",
           "tableTo": "habit_table",
-          "columnsFrom": ["habit_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "habit_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -70,8 +74,12 @@
           "name": "habit_completion_table_user_id_users_table_id_fk",
           "tableFrom": "habit_completion_table",
           "tableTo": "users_table",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -115,6 +123,18 @@
           "primaryKey": false,
           "notNull": true
         },
+        "parent_habit_id": {
+          "name": "parent_habit_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "child_habit_id": {
+          "name": "child_habit_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
         "user_id": {
           "name": "user_id",
           "type": "uuid",
@@ -141,8 +161,12 @@
           "name": "habit_table_user_id_users_table_id_fk",
           "tableFrom": "habit_table",
           "tableTo": "users_table",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -199,8 +223,12 @@
           "name": "posts_table_user_id_users_table_id_fk",
           "tableFrom": "posts_table",
           "tableTo": "users_table",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -265,8 +293,12 @@
           "name": "task_table_user_id_users_table_id_fk",
           "tableFrom": "task_table",
           "tableTo": "users_table",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -307,7 +339,7 @@
           "name": "timezone",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         }
       },
       "indexes": {},
@@ -317,7 +349,9 @@
         "users_table_email_unique": {
           "name": "users_table_email_unique",
           "nullsNotDistinct": false,
-          "columns": ["email"]
+          "columns": [
+            "email"
+          ]
         }
       }
     }

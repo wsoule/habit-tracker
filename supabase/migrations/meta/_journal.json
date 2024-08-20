@@ -127,6 +127,13 @@
       "when": 1724067210697,
       "tag": "0017_left_amazoness",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1724088247076,
+      "tag": "0018_mysterious_ego",
+      "breakpoints": true
     }
   ]
 }

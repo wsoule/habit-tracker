@@ -1,6 +1,6 @@
 import { deleteTodo } from '$lib/db/queries/delete';
 import { changeToDoStatus } from '$lib/db/queries/update';
-import { habitCompletiontable } from '$lib/db/schema/habit-completion.table';
+import { habitCompletionTable } from '$lib/db/schema/habit-completion.table';
 import { taskTable } from '$lib/db/schema/todo.table';
 import type { Todo } from '$lib/types/todo-item';
 import { error, json } from '@sveltejs/kit';
@@ -13,7 +13,7 @@ export async function POST({ request }: { request: Request }) {
     });
   }
   const { id, category } = requestObject;
-  const table = category === 'habit' ? habitCompletiontable : taskTable;
+  const table = category === 'habit' ? habitCompletionTable : taskTable;
   if (requestObject.remove) {
     if (category === 'habit') {
       throw error(400, {

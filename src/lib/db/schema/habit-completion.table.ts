@@ -1,8 +1,9 @@
 import { boolean, date, pgTable, timestamp, uuid } from 'drizzle-orm/pg-core';
+import { relations } from 'drizzle-orm';
 import { usersTable } from './user.table';
 import { habitTable } from './habit.table';
 
-export const habitCompletiontable = pgTable('habit_completion_table', {
+export const habitCompletionTable = pgTable('habit_completion_table', {
   id: uuid('id').defaultRandom().primaryKey(),
   habitId: uuid('habit_id')
     .references(() => habitTable.id, { onDelete: 'cascade' })
@@ -17,5 +18,14 @@ export const habitCompletiontable = pgTable('habit_completion_table', {
     .notNull()
     .$onUpdate(() => new Date())
 });
-export type InsertHabitCompletion = typeof habitCompletiontable.$inferInsert;
-export type SelectHabitCompletion = typeof habitCompletiontable.$inferSelect;
+
+// Define the relations between the habitCompletionTable and habitTable
+export const habitCompletionRelations = relations(habitCompletionTable, ({ one }) => ({
+  habit: one(habitTable, {
+    fields: [habitCompletionTable.habitId],
+    references: [habitTable.id]
+  })
+}));
+
+export type InsertHabitCompletion = typeof habitCompletionTable.$inferInsert;
+export type SelectHabitCompletion = typeof habitCompletionTable.$inferSelect;
